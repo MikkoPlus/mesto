@@ -24,5 +24,6 @@
 @import url('../blocks/place-card/__descr/place-card__descr.css');
 @import url('../blocks/place-card/__heart/place-card__heart.css');
 
-
+@import url('../blocks/footer/footer.css');
+@import url('../blocks/footer/__copyright/footer__copyright.css');
 
