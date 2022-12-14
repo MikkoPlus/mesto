@@ -24,9 +24,6 @@
 @import url('../blocks/place-card/__descr/place-card__descr.css');
 @import url('../blocks/place-card/__heart/place-card__heart.css');
 
-@import url('../blocks/footer/footer.css');
-@import url('../blocks/footer/__copyright/footer__copyright.css');
-
 @import url('../blocks/popup/popup.css');
 @import url('../blocks/popup/_active/popup_active.css');
 @import url('../blocks/popup/__window/popup__window.css');
@@ -38,3 +35,5 @@
 @import url('../blocks/form/__input/_type/form__input_type_job.css');
 @import url('../blocks/form/__btn/form__btn.css');
 
+@import url('../blocks/footer/footer.css');
+@import url('../blocks/footer/__copyright/footer__copyright.css');
