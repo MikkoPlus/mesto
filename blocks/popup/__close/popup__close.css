@@ -1,0 +1,9 @@
+.popup__close {
+    position: absolute;
+    margin: 0;
+    top: -40px;
+    right: -40px;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
