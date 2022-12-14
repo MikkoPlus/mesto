@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,21 +9,66 @@
 </head>
 <body class ="page">
     <header class="header">
-        <img src="./images/logo.svg" alt="Место Россия" class="logo">
+        <img src="./images/icons/logo.svg" alt="Mesto Russia" class="logo">
     </header>
     <main class="content">
         <section class="profile">
-            <img src="./images/profile/avatar.png" alt="Аватар" class="profile__avatar">
+            <img src="./images/profile/avatar.png" alt="Avatar" class="profile__avatar">
 
             <div class="profile__information">
-                <h1 class="profile__name">Жак-Ив Кусто</h1>
+                <h1 class="profile__name">Jacques-Yves Cousteau</h1>
                 <button class="profile__edit-btn"></button>
-                <h2 class="profile__job">Исследователь океана</h2>
+                <h2 class="profile__job">Ocean explorer</h2>
             </div>
 
             <button class="profile__add-button"></button>
         </section>
-        
+        <section class="places">
+            <ul class="places__list">
+                <li class="place-card">
+                    <img src="./images/places/1.jpg" alt="#" class="place-card-image">
+                    <div class="place-card__footer">
+                        <h3 class="place-card__descr">Карачаевск</h3>
+                        <img src="./images/icons/heart_black.svg" alt="Like" class="place-card__heart">
+                    </div>
+                </li>
+                <li class="place-card">
+                    <img src="./images/places/2.jpg" alt="#" class="place-card-image">
+                    <div class="place-card__footer">
+                        <h3 class="place-card__descr">Гора Эльбрус</h3>
+                        <img src="./images/icons/heart.svg" alt="Like" class="place-card__heart">
+                    </div>
+                </li>
+                <li class="place-card">
+                    <img src="./images/places/3.jpg" alt="#" class="place-card-image">
+                    <div class="place-card__footer">
+                        <h3 class="place-card__descr">Домбай</h3>
+                        <img src="./images/icons/heart.svg" alt="Like" class="place-card__heart">
+                    </div>
+                </li>
+                <li class="place-card">
+                    <img src="./images/places/2.jpg" alt="#" class="place-card-image">
+                    <div class="place-card__footer">
+                        <h3 class="place-card__descr">Гора Эльбрус</h3>
+                        <img src="./images/icons/heart.svg" alt="Like" class="place-card__heart">
+                    </div>
+                </li>
+                <li class="place-card">
+                    <img src="./images/places/3.jpg" alt="#" class="place-card-image">
+                    <div class="place-card__footer">
+                        <h3 class="place-card__descr">Домбай</h3>
+                        <img src="./images/icons/heart.svg" alt="Like" class="place-card__heart">
+                    </div>
+                </li>
+                <li class="place-card">
+                    <img src="./images/places/1.jpg" alt="#" class="place-card-image">
+                    <div class="place-card__footer">
+                        <h3 class="place-card__descr">Карачаево-Ч...</h3>
+                        <img src="./images/icons/heart.svg" alt="Like" class="place-card__heart">
+                    </div>
+                </li>
+            </ul>
+        </section>
     </main>
     <script src="./js/script.js"></script>
 </body>

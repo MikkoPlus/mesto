@@ -1,0 +1,8 @@
+.profile__information {
+    flex: 1 1 50%;
+    padding-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: start;
+}
