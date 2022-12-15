@@ -10,3 +10,10 @@
         padding: 48px 0px 40px;
     }
 }
+
+@media (max-width: 779px) {
+    .footer {
+        max-width: 685px;
+        padding: 35px 0px 30px;
+    }
+}

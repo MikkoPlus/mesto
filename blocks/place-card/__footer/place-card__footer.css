@@ -6,3 +6,9 @@
     align-items: center;
     border-radius: 0 0 10px 10px;
 }
+
+@media (max-width: 779px) {
+    .place-card__footer {
+        padding: 20px 10px;
+    }
+}
