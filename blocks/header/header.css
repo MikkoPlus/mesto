@@ -4,3 +4,16 @@
     min-height: 73px;
     border-bottom: 1px solid #545454;
 }
+
+@media (max-width: 879px) {
+    .header {
+        max-width: 769px;
+    }
+}
+
+@media (max-width: 779px) {
+    .header {
+        max-width: 685px;
+        margin-top: 31px;
+    }
+}

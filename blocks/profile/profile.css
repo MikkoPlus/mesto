@@ -1,7 +1,19 @@
 .profile {
-    width: 100%;
+    max-width: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
-    margin-top: 40px;
+    margin: 40px auto 0;
+}
+
+@media (max-width: 880px) {
+    .profile {
+        max-width: 769px;
+    }
+}
+
+@media (max-width: 779px) {
+    .profile {
+        max-width: 685px;
+    }
 }

@@ -13,3 +13,9 @@
 .profile__edit-btn:hover {
     opacity: .6;
 }
+
+@media (max-width: 879px) {
+    .profile__edit-btn {
+        margin-left: 10px;
+    }
+}

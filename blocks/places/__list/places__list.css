@@ -7,4 +7,14 @@
     column-gap: 17px;
     row-gap: 20px;
     list-style: none;
+    justify-content: center;
+}
+
+
+@media (max-width: 879px) {
+    .places__list {
+        /* max-width: 769px; */
+        grid-template-columns: repeat(3, minmax(252px, 282px));
+        grid-auto-rows: 331px;
+    }
 }

@@ -1,4 +1,10 @@
 .places {
     width: 100%;
-    margin-top: 51px;
+    margin: 51px auto 0;
+}
+
+@media (max-width: 879px) {
+    .places {
+        max-width: 769px;
+    }
 }

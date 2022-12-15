@@ -1,35 +1,28 @@
 'use strict';
 
 window.addEventListener('DOMContentLoaded',() => {
-
     const profileName = document.querySelector('.profile__name'),
           profileJob = document.querySelector('.profile__job');
+
+    function sliceString (titles, maxLength) {
+    if (titles.length > 1) {
+        titles.forEach((title) => {
+            if (title.textContent.length > maxLength) {
+                title.textContent = title.textContent.slice(0, maxLength) + '...';
+            }
+        });
+    } else {
+        if (titles.textContent.length > maxLength) {
+            titles.textContent = titles.textContent.slice(0, maxLength) + '...';
+        }}
+    }
 
     function sliceStringHandler () {
         const cardTitles = document.querySelectorAll('.place-card__descr');
 
-
-        function sliceString (titles, maxLength) {
-            if (titles.length > 1) {
-                titles.forEach((title) => {
-                    if (title.textContent.length > maxLength) {
-                        title.textContent = title.textContent.slice(0, maxLength) + '...';
-                    }
-                });
-            } else {
-                if (titles.textContent.length > maxLength) {
-                    titles.textContent = titles.textContent.slice(0, maxLength) + '...';
-                }
-            }
-        }
-
         sliceString(cardTitles, 12);
         sliceString(profileName, 21);
-
-
     }
-
-
 
     function changeHeartColor () {
         const hearts = document.querySelectorAll('.place-card__heart');
@@ -53,11 +46,21 @@ window.addEventListener('DOMContentLoaded',() => {
               inputName = form.querySelector('.form__input_type_name'),
               inputJob = form.querySelector('.form__input_type_job');
     
-        // functoins
+        // open popup + add padding right to body
+
+        function bodyLock () {
+            let bodyWidth = document.documentElement.clientWidth;
+            page.classList.add('page_lock');
+            let openPopupBodyWidth = document.documentElement.clientWidth;
+            let paddingRight = openPopupBodyWidth - bodyWidth + 'px';
+            page.style.paddingRight = `${paddingRight}`;
+        }
+
+        //functions
 
         function openPopup () {
             popup.classList.add('popup_active');
-            page.classList.add('page_lock');
+            bodyLock();
             pasteValueToInput();
         }
 
@@ -69,7 +72,10 @@ window.addEventListener('DOMContentLoaded',() => {
         function closePopup () {
             popup.classList.remove('popup_active');
             page.classList.remove('page_lock');
+            page.style.paddingRight = '0';
         }
+
+
 
         function editProfileData () {
             form.addEventListener('submit', (event) =>{
@@ -100,7 +106,6 @@ window.addEventListener('DOMContentLoaded',() => {
             localStorage.setItem('job', profileJob.textContent);
             profileJob.textContent = localStorage.getItem('job');
         }
-
 
         // open popup
 

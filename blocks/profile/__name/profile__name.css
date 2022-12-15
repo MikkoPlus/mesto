@@ -7,3 +7,17 @@
     color: #FFFFFF;
     display: inline-block;
 }
+
+@media (max-width: 879px) {
+    .profile__name {
+        font-size: 35px;
+        line-height: 40px;
+    }
+}
+
+@media (max-width: 779px) {
+    .profile__name {
+        font-size: 30px;
+        line-height: 35px;
+    }
+}

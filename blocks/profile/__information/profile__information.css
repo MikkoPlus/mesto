@@ -6,3 +6,9 @@
     align-items: center;
     justify-content: start;
 }
+
+@media (max-width: 879px) {
+    .profile__information {
+        padding-left: 15px;
+    }
+}
