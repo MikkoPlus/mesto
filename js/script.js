@@ -20,7 +20,8 @@ window.addEventListener('DOMContentLoaded',() => {
     function sliceStringHandler () {
         const cardTitles = document.querySelectorAll('.place-card__descr');
 
-        if (document.documentElement.offsetWidth > 581 && document.documentElement.offsetWidth < 660 || document.documentElement.offsetWidth > 300 && document.documentElement.offsetWidth < 378) {
+        if (document.documentElement.offsetWidth > 581 && document.documentElement.offsetWidth < 660 || 
+            document.documentElement.offsetWidth > 300 && document.documentElement.offsetWidth < 378) {
             sliceString(profileName, 16);
         } else {
             sliceString(profileName, 21);
