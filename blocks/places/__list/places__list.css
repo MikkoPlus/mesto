@@ -3,7 +3,7 @@
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 282px);
-    grid-auto-rows: auto;
+    grid-auto-rows: 361px;
     column-gap: 17px;
     row-gap: 20px;
     list-style: none;

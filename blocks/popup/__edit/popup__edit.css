@@ -5,3 +5,16 @@
     line-height: 29px;
     color: #000;
 }
+
+@media (max-width: 545px) {
+    .popup__edit {
+        font-size: 21px;
+    }
+}
+
+@media (max-width: 436px) {
+    .popup__edit {
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
