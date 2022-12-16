@@ -19,14 +19,16 @@ window.addEventListener('DOMContentLoaded',() => {
 
     function sliceStringHandler () {
         const cardTitles = document.querySelectorAll('.place-card__descr');
-
+        
+        //adaptive slice string
+        
         if (document.documentElement.offsetWidth > 581 && document.documentElement.offsetWidth < 660 || 
             document.documentElement.offsetWidth > 300 && document.documentElement.offsetWidth < 378) {
             sliceString(profileName, 16);
         } else {
             sliceString(profileName, 21);
         }
-        if (document.documentElement.offsetWidth > 300 && document.documentElement.offsetWidth < 420) {
+        if (document.documentElement.offsetWidth > 350 && document.documentElement.offsetWidth < 420) {
             sliceString(cardTitles, 20);
         } else {
             sliceString(cardTitles, 12);

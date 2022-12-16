@@ -12,3 +12,9 @@
         padding: 20px 10px;
     }
 }
+
+@media (max-width: 420px) {
+    .place-card__footer {
+        padding: 25px 20px;
+    }
+}

@@ -3,3 +3,10 @@
     height: 33px;
     object-fit: contain;
 }
+
+@media (max-width: 565px) {
+    .logo {
+        width: 104px;
+        height: 24.5px;
+    }
+}
