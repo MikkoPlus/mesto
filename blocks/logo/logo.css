@@ -1,12 +1,5 @@
 .logo {
-    width: 142px;
-    height: 33px;
+    max-width: 100%;
+    height: 100%;
     object-fit: contain;
-}
-
-@media (max-width: 565px) {
-    .logo {
-        width: 104px;
-        height: 24.5px;
-    }
 }
