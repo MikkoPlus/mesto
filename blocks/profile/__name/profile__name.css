@@ -21,3 +21,9 @@
         line-height: 35px;
     }
 }
+
+@media (max-width: 693px) {
+    .profile__name {
+        font-size: 27px;
+    }
+}

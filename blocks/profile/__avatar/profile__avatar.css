@@ -10,3 +10,10 @@
         height: 100px;
     }
 }
+
+@media (max-width: 594px) {
+    .profile__avatar {
+        width: 125px;
+        height: 125px;
+    }
+}

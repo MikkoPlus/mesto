@@ -17,3 +17,11 @@
         margin-top: 31px;
     }
 }
+
+@media (max-width: 693px) {
+    .header {
+        max-width: 100%;
+        margin-top: 31px;
+        padding-left: 15px;
+    }
+}
