@@ -1,42 +1,6 @@
 'use strict';
 
 window.addEventListener('DOMContentLoaded',() => {
-    const profileName = document.querySelector('.profile__name'),
-          profileJob = document.querySelector('.profile__job');
-
-    function sliceString (titles, maxLength) {
-    if (titles.length > 1) {
-        titles.forEach((title) => {
-            if (title.textContent.length > maxLength) {
-                title.textContent = title.textContent.slice(0, maxLength) + '...';
-            }
-        });
-    } else {
-        if (titles.textContent.length > maxLength) {
-            titles.textContent = titles.textContent.slice(0, maxLength) + '...';
-        }}
-    }
-
-    function sliceStringHandler () {
-        const cardTitles = document.querySelectorAll('.place-card__descr');
-        
-        //adaptive slice string
-        window.addEventListener('resize',() => {
-            if (document.documentElement.offsetWidth > 581 && document.documentElement.offsetWidth < 660 || 
-                document.documentElement.offsetWidth > 300 && document.documentElement.offsetWidth < 378) {
-                sliceString(profileName, 15);
-            } else {
-                profileName.textContent = localStorage.getItem('name');
-                sliceString(profileName, 21);
-            }
-            if (document.documentElement.offsetWidth > 350 && document.documentElement.offsetWidth < 420) {
-                sliceString(cardTitles, 20);
-            } else {
-                sliceString(cardTitles, 12);
-            }
-        });
-    }
-
     function changeHeartColor () {
         const hearts = document.querySelectorAll('.place-card__heart');
     
@@ -57,7 +21,9 @@ window.addEventListener('DOMContentLoaded',() => {
               page = document.querySelector('.page'),
               form = popup.querySelector('.form'),
               inputName = form.querySelector('.form__input_type_name'),
-              inputJob = form.querySelector('.form__input_type_job');
+              inputJob = form.querySelector('.form__input_type_job'),
+              profileName = document.querySelector('.profile__name'),
+              profileJob = document.querySelector('.profile__job');
     
         // open popup + add padding right to body
 
@@ -78,8 +44,8 @@ window.addEventListener('DOMContentLoaded',() => {
         }
 
         function pasteValueToInput() {
-            inputName.value = localStorage.getItem('name');
-            inputJob.value = localStorage.getItem('job');
+            inputName.value = profileName.textContent;
+            inputJob.value = profileJob.textContent;
         }
 
         function closePopup () {
@@ -88,36 +54,16 @@ window.addEventListener('DOMContentLoaded',() => {
             page.style.paddingRight = '0';
         }
 
-
-
         function editProfileData () {
             form.addEventListener('submit', (event) =>{
                 event.preventDefault();
                 if (inputName.value !== '' && inputJob.value !== '') {
                     profileJob.textContent = inputJob.value;
-                    localStorage.setItem('job', profileJob.textContent);
 
                     profileName.textContent = inputName.value;
-                    localStorage.setItem('name', profileName.textContent);
                     closePopup();
                 }
             });
-        }
-
-        // Set profile values from local storage
-
-        if (localStorage.getItem('name')) {
-            profileName.textContent = localStorage.getItem('name');
-        } else {
-            localStorage.setItem('name', profileName.textContent);
-            profileName.textContent = localStorage.getItem('name');
-        }
-
-        if (localStorage.getItem('job')) {
-            profileJob.textContent = localStorage.getItem('job');
-        } else {
-            localStorage.setItem('job', profileJob.textContent);
-            profileJob.textContent = localStorage.getItem('job');
         }
 
         // open popup
@@ -141,5 +87,4 @@ window.addEventListener('DOMContentLoaded',() => {
     }
     changeHeartColor();
     popupHandler();
-    sliceStringHandler();
 });

@@ -1,6 +1,6 @@
 .place-card__like-btn {
     padding: 0;
-    width: 22px;
+    min-width: 22px;
     height: 19px;
     border: none;
     background-color: #fff;
