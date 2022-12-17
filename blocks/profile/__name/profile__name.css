@@ -28,9 +28,3 @@
     }
 }
 
-
-@media (max-width: 450px) {
-    .profile__name {
-        justify-self: end;
-    }
-}
