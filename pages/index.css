@@ -25,6 +25,7 @@
 @import url('../blocks/place-card/__imgae/place-card__image.css');
 @import url('../blocks/place-card/__footer/place-card__footer.css');
 @import url('../blocks/place-card/__descr/place-card__descr.css');
+@import url('../blocks/place-card/__like-btn/place-card__like-btn.css');
 @import url('../blocks/place-card/__heart/place-card__heart.css');
 
 @import url('../blocks/popup/popup.css');
