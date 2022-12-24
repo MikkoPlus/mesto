@@ -77,11 +77,6 @@ window.addEventListener('DOMContentLoaded',() => {
                 openPopup();
                 editProfileData ();
                 popupClose.addEventListener('click', closePopup);
-                popup.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('popup_active')) {
-                        closePopup();
-                    }
-                });
             }
         });
     }
