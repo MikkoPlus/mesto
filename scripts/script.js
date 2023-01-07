@@ -83,3 +83,14 @@ window.addEventListener('DOMContentLoaded',() => {
     changeHeartColor();
     popupHandler();
 });
+
+const password = prompt('Введите пароль:', '');
+
+for (let i = 0; i <= password.length; i++) {
+    if (password[i] === '?') {
+        console.log('"?" есть в пароле на позиции ' + (i + 1));
+        break;
+    } else {
+        continue;
+    }
+}
