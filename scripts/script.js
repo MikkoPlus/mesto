@@ -1,30 +1,50 @@
 'use strict';
 
 window.addEventListener('DOMContentLoaded',() => {
-    function changeHeartColor () {
-        const hearts = document.querySelectorAll('.place-card__heart');
-    
-        hearts.forEach((heart) =>{
-            heart.addEventListener('click', () => {
-                if (heart.getAttribute('src') == './images/icons/heart.svg') {
-                    heart.setAttribute('src', './images/icons/heart_black.svg');
-                } else {
-                    heart.setAttribute('src', './images/icons/heart.svg');
+    function popupHandler () {
+        const eventBtns = document.querySelectorAll('.event-btn'),
+              page = document.querySelector('.page'),
+              popup = document.querySelector('.popup'),
+              popupWindow = popup.querySelectorAll('.popup__window'),
+              profileName = document.querySelector('.profile__name'),
+              profileJob = document.querySelector('.profile__job'),
+              placesList = document.querySelector('.places__list');
+
+        // change color of heart, remove el from cards list and open fullscreen image
+
+        function placeCardsEvents () {
+            placesList.addEventListener('click', (event) => {
+                if (event.target.tagName === 'IMG' && event.target.classList.contains('place-card__trash-bag')) {
+                    const currentCard = event.target.parentElement;
+                    placesList.removeChild(currentCard);
+                } else if (event.target.tagName === 'IMG' && event.target.classList.contains('place-card__heart')) {
+                    if (event.target.getAttribute('src') == './images/icons/heart.svg') {
+                        event.target.setAttribute('src', './images/icons/heart_black.svg');
+                    } else {
+                        event.target.setAttribute('src', './images/icons/heart.svg');
+                    }
+                } else if (event.target.tagName === 'IMG' && event.target.classList.contains('place-card__image')) {
+                    openPopup();
+                    popup.classList.add('popup_fullscreen-img');
+                    openFullscreenImg(event.target);
                 }
             });
-        });
-    }
+        }
+        function openFullscreenImg (targetImg) {
+            const targetImage = targetImg,
+            imageSrc = targetImage.getAttribute('src'),
+            imageAlt = targetImage.getAttribute('alt'),
+            imageDescr = targetImage.parentElement.querySelector('.place-card__descr').textContent,
+            targetPopupId = targetImage.getAttribute('data-popup'),
+            targetPopup = popup.querySelector(`#${targetPopupId}`);
 
-    function popupHandler () {
-        const editBtn = document.querySelector('.profile__edit-btn'),
-              popup = document.querySelector('.popup'),
-              page = document.querySelector('.page'),
-              form = popup.querySelector('.form'),
-              inputName = form.querySelector('.form__input_type_name'),
-              inputJob = form.querySelector('.form__input_type_job'),
-              profileName = document.querySelector('.profile__name'),
-              profileJob = document.querySelector('.profile__job');
-    
+            targetPopup.querySelector('.popup__descr').textContent = imageDescr;
+            targetPopup.querySelector('.popup__fullscreen-image').setAttribute('src', imageSrc);
+            targetPopup.querySelector('.popup__fullscreen-image').setAttribute('alt', imageAlt);
+            targetPopup.classList.add('popup__window_active');
+
+            closePopupOnClickIcon(targetPopup);
+          }
         // open popup + add padding right to body
 
         function bodyLock () {
@@ -35,26 +55,39 @@ window.addEventListener('DOMContentLoaded',() => {
             page.style.paddingRight = `${paddingRight}`;
         }
 
+        function bodyUnlock () {
+            page.classList.remove('page_lock');
+            page.style.paddingRight = 0;
+        }
+
+
         //functions
 
         function openPopup () {
             popup.classList.add('popup_active');
             bodyLock();
-            pasteValueToInput();
-        }
-
-        function pasteValueToInput() {
-            inputName.value = profileName.textContent;
-            inputJob.value = profileJob.textContent;
         }
 
         function closePopup () {
+            popupWindow.forEach(item => {
+                item.classList.remove('popup__window_active');
+                if (item.classList.contains('popup__window_type_fullscreen-img')) {
+                    popup.classList.remove('popup_fullscreen-img');
+                }
+            });
             popup.classList.remove('popup_active');
-            page.classList.remove('page_lock');
-            page.style.paddingRight = '0';
+            setTimeout(() => bodyUnlock(), 300);
         }
 
         function editProfileData () {
+
+            const form = popup.querySelector('#edit-profile'),
+                  inputName = form.querySelector('.form__input_type_name'),
+                  inputJob = form.querySelector('.form__input_type_job');
+
+                  inputName.value = profileName.textContent;
+                  inputJob.value = profileJob.textContent;
+
             form.addEventListener('submit', (event) =>{
                 event.preventDefault();
                 if (inputName.value !== '' && inputJob.value !== '') {
@@ -66,20 +99,63 @@ window.addEventListener('DOMContentLoaded',() => {
             });
         }
 
+        function closePopupOnClickIcon(targetPopup) {
+            const popupCloses = targetPopup.querySelector('.popup__close');
+
+                popupCloses.addEventListener('click', closePopup);
+        }
+
         // open popup
+        
+        eventBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+    
+                const currentPopupId = e.target.getAttribute('data-popup'),
+                      currentPopup = popup.querySelector(`#${currentPopupId}`);
+    
+                currentPopup.classList.add('popup__window_active');
 
-        editBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+    
+                if (!popup.classList.contains('popup_active')) {
+                    openPopup();
+                    if (currentPopupId === 'edit-profile') {
+                        editProfileData ();
+                    } else if (currentPopupId === 'add-card') {
+                        addCard();
+                    }
 
-            if (!popup.classList.contains('popup_active')) {
-                const popupClose = popup.querySelector('.popup__close');
-
-                openPopup();
-                editProfileData ();
-                popupClose.addEventListener('click', closePopup);
-            }
+                    closePopupOnClickIcon(currentPopup);
+                }
+            });
         });
-    }
-    changeHeartColor();
+
+            // add card to places section 
+        function addCard() {
+            const cardTemplate = document.querySelector('#place-card-template').content,
+                placeCardElement= cardTemplate.querySelector('.place-card').cloneNode(true),
+                placeCardImage = placeCardElement.querySelector('.place-card__image'),
+                placeCardDescr = placeCardElement.querySelector('.place-card__descr'),
+                placeCardContainer = document.querySelector('.places__list'),
+                form = document.querySelector('#add-card'),
+                inputCardName = form.querySelector('.form__input_type_place-name'),
+                inputCardUrl = form.querySelector('.form__input_type_url');
+
+                form.addEventListener('submit', (event) =>{
+                    event.preventDefault();
+
+                    placeCardImage.src = inputCardUrl.value;
+                    placeCardImage.setAttribute('alt', inputCardName.value);
+
+                    placeCardDescr.textContent = inputCardName.value;
+
+                    placeCardContainer.prepend(placeCardElement);
+
+
+                    closePopup();
+                });
+            }
+            placeCardsEvents();
+        }
     popupHandler();
 });

@@ -19,16 +19,17 @@
 
             <div class="profile__information">
                 <h1 class="profile__name">Jacques-Yves Cousteau</h1>
-                <button class="profile__edit-btn"></button>
+                <button data-popup="edit-profile" class="profile__edit-btn event-btn"></button>
                 <h2 class="profile__job">Ocean explorer</h2>
             </div>
 
-            <button class="profile__add-button"></button>
+            <button data-popup="add-card" class="profile__add-button event-btn"></button>
         </section>
         <section class="places">
             <ul class="places__list">
                 <li class="place-card">
-                    <img src="./images/places/Atuh-beach.webp" alt="Atuh Beach" class="place-card__image">
+                    <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+                    <img src="./images/places/Atuh-beach.webp" alt="Atuh Beach" data-popup="open-image" class="place-card__image">
                     <div class="place-card__footer">
                         <h3 class="place-card__descr">Atuh Beach</h3>
                         <button class="place-card__like-btn">
@@ -37,7 +38,8 @@
                     </div>
                 </li>
                 <li class="place-card">
-                    <img src="./images/places/Rice-fields.webp" alt="Rice fields" class="place-card__image">
+                    <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+                    <img src="./images/places/Rice-fields.webp" alt="Rice fields" data-popup="open-image" class="place-card__image">
                     <div class="place-card__footer">
                         <h3 class="place-card__descr">Rice fields</h3>
                         <button class="place-card__like-btn">
@@ -46,7 +48,8 @@
                     </div>
                 </li>
                 <li class="place-card">
-                    <img src="./images/places/Kuta-beach.webp" alt="Kuta beach" class="place-card__image">
+                    <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+                    <img src="./images/places/Kuta-beach.webp" alt="Kuta beach" data-popup="open-image" class="place-card__image">
                     <div class="place-card__footer">
                         <h3 class="place-card__descr">Kuta beach</h3>
                         <button class="place-card__like-btn">
@@ -55,7 +58,8 @@
                     </div>
                 </li>
                 <li class="place-card">
-                    <img src="./images/places/Nusa-Penida.webp" alt="Nusa-Penida island" class="place-card__image">
+                    <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+                    <img src="./images/places/Nusa-Penida.webp" alt="Nusa-Penida island" data-popup="open-image" class="place-card__image">
                     <div class="place-card__footer">
                         <h3 class="place-card__descr">Nusa-Penida island</h3>
                         <button class="place-card__like-btn">
@@ -64,7 +68,8 @@
                     </div>
                 </li>
                 <li class="place-card">
-                    <img src="./images/places/Mount-Batur.webp" alt="Mount Batur" class="place-card__image">
+                    <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+                    <img src="./images/places/Mount-Batur.webp" alt="Mount Batur" data-popup="open-image" class="place-card__image">
                     <div class="place-card__footer">
                         <h3 class="place-card__descr">Mount Batur</h3>
                         <button class="place-card__like-btn">
@@ -73,7 +78,8 @@
                     </div>
                 </li>
                 <li class="place-card">
-                    <img src="./images/places/Ubud.webp" alt="District Ubud" class="place-card__image">
+                    <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+                    <img src="./images/places/Ubud.webp" alt="District Ubud" data-popup="open-image" class="place-card__image">
                     <div class="place-card__footer">
                         <h3 class="place-card__descr">Ubud</h3>
                         <button class="place-card__like-btn">
@@ -84,20 +90,49 @@
             </ul>
         </section>
         <section class="popup">
-            <div class="popup__window">
+            <div class="popup__window popup__window_type_form" id="edit-profile">
                 <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
-                <h4 class="popup__edit">Редактировать профиль</h4>
+                <h4 class="popup__title">Редактировать профиль</h4>
                 <form class="form">
                     <input type="text" maxlength="19" class="form__input form__input_type_name">
                     <input type="text" maxlength="30" class="form__input form__input_type_job">
                     <button class="form__btn">Сохранить</button>
                 </form>
             </div>
+
+            <div class="popup__window popup__window_type_form" id="add-card">
+                <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
+                <h4 class="popup__title">Новое место</h4>
+                <form class="form">
+                    <input type="text" placeholder="Название" class="form__input form__input_type_place-name">
+                    <input type="text" placeholder="Ссылка на картинку" class="form__input form__input_type_url">
+                    <button class="form__btn">Создать</button>
+                </form>
+            </div>
+
+            <div class="popup__window popup__window_type_fullscreen-img" id="open-image">
+                <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
+                <img src="" alt="" class="popup__fullscreen-image">
+                <h3 class="popup__descr"></h3>
+            </div>
         </section>
     </main>
     <footer class="footer">
         <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
     </footer>
+
+    <template id="place-card-template">
+        <li class="place-card">
+            <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+            <img src="" alt="" data-popup="open-image" class="place-card__image">
+            <div class="place-card__footer">
+                <h3 class="place-card__descr"></h3>
+                <button class="place-card__like-btn">
+                    <img src="./images/icons/heart.svg" alt="Like" class="place-card__heart">
+                </button>
+            </div>
+        </li>
+    </template> 
     <script src="./scripts/script.js"></script>
 </body>
 </html>
