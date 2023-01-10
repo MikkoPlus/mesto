@@ -52,6 +52,7 @@ window.addEventListener('DOMContentLoaded',() => {
             page.classList.add('page_lock');
             let openPopupBodyWidth = document.documentElement.clientWidth;
             let paddingRight = openPopupBodyWidth - bodyWidth + 'px';
+            console.log(paddingRight);
             page.style.paddingRight = `${paddingRight}`;
         }
 
@@ -68,14 +69,10 @@ window.addEventListener('DOMContentLoaded',() => {
             bodyLock();
         }
 
-        function closePopup () {
-            popupWindow.forEach(item => {
-                item.classList.remove('popup__window_active');
-                if (item.classList.contains('popup__window_type_fullscreen-img')) {
-                    popup.classList.remove('popup_fullscreen-img');
-                }
-            });
-            popup.classList.remove('popup_active');
+        function closePopup (targetPopup) {
+
+            targetPopup.classList.remove('popup__window_active');
+            targetPopup.parentElement.className = 'popup';
             setTimeout(() => bodyUnlock(), 300);
         }
 
@@ -90,11 +87,13 @@ window.addEventListener('DOMContentLoaded',() => {
 
             form.addEventListener('submit', (event) =>{
                 event.preventDefault();
+
+                const currentPopup = event.target.closest('.popup__window');
                 if (inputName.value !== '' && inputJob.value !== '') {
                     profileJob.textContent = inputJob.value;
 
                     profileName.textContent = inputName.value;
-                    closePopup();
+                    closePopup(currentPopup);
                 }
             });
         }
