@@ -2,7 +2,6 @@
 @import url('../vendor/fonts/font.css');
 
 @import url('../blocks/page/page.css');
-@import url('../blocks/page/_lock/page_lock.css');
 
 @import url('../blocks/header/header.css');
 @import url('../blocks/header/__link/header__link.css');
@@ -28,6 +27,7 @@
 @import url('../blocks/place-card/__descr/place-card__descr.css');
 @import url('../blocks/place-card/__like-btn/place-card__like-btn.css');
 @import url('../blocks/place-card/__heart/place-card__heart.css');
+@import url('../blocks/place-card/__heart/_like/place-card__heart_like.css');
 
 @import url('../blocks/popup/popup.css');
 @import url('../blocks/popup/_active/popup_active.css');
