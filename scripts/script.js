@@ -5,20 +5,20 @@ window.addEventListener('DOMContentLoaded',() => {
     const popupSection = document.querySelector('.popups'),
           editProfilePopup = popupSection.querySelector('#edit-profile-popup'),
           addCardPopup = popupSection.querySelector('#add-card-popup'),
-          fullscreenImagePopup = document.querySelector('#open-image-popup'),
+          fullscreenImagePopup = popupSection.querySelector('#open-image-popup'),
           fullscreenImage = fullscreenImagePopup.querySelector('.popup__fullscreen-image'),
           fullscreenDescr = fullscreenImagePopup.querySelector('.popup__descr'),
           popupCloseIcons = popupSection.querySelectorAll('.popup__close'),
-          inputName = popupSection.querySelector('.form__input_type_name'),
-          inputJob = popupSection.querySelector('.form__input_type_job'),
+          inputName = editProfilePopup.querySelector('.form__input_type_name'),
+          inputJob = editProfilePopup.querySelector('.form__input_type_job'),
           profileName = document.querySelector('.profile__name'),
           profileJob = document.querySelector('.profile__job'),
           formEditProfile = editProfilePopup.querySelector('#edit-profile-form'),
           formAddCard = popupSection.querySelector('#add-card-form'),
           editProfileOpenPopupBtn = document.querySelector('.profile__edit-btn'),
           addCardOpenPopupBtn = document.querySelector('.profile__add-button'),
-          inputCardName = popupSection.querySelector('.form__input_type_place-name'),
-          inputCardUrl = popupSection.querySelector('.form__input_type_url'),
+          inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
+          inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
           cardTemplate = document.querySelector('#place-card-template').content,
           placeCardContainer = document.querySelector('.places__list');
 
@@ -73,7 +73,7 @@ window.addEventListener('DOMContentLoaded',() => {
     });
 
     // add user cards functions
-    
+
     function createUserCard() {
         const newCard = createNewCard(inputCardUrl.value, inputCardName.value);
 
