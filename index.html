@@ -34,21 +34,23 @@
                 <div class="popup__window popup__window_type_form">
                     <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
                     <h4 class="popup__title">Редактировать профиль</h4>
-                    <form class="form" id="edit-profile-form">
+                    <form class="form" id="edit-profile-form" novalidate>
                         <input required
+                               id="input-profile-name"
                                type="text" 
                                minlength="2"
                                maxlength="20" 
                                class="form__input form__input_type_name">
-                        <span class="form__input-text-error"></span>
+                        <span id="input-profile-name-error" class="form__input-text-error"></span>
 
                         <input required
-                               type="text" 
-                               minlength="2"
-                               maxlength="200" 
-                               class="form__input input__error form__input_type_job">
-                        <span class="form__input-text-error"></span>
-                        
+                                id="input-profile-job"
+                                type="text" 
+                                minlength="2"
+                                maxlength="200" 
+                                class="form__input form__input_type_job">
+                        <span id="input-profile-job-error" class="form__input-text-error"></span>
+
                         <button type="submit" class="form__btn">Сохранить</button>
                     </form>
                 </div>
@@ -58,22 +60,24 @@
                     <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
                     <h4 class="popup__title">Новое место</h4>
 
-                    <form class="form" id="add-card-form">
+                    <form class="form" id="add-card-form" novalidate>
                         <input required
-                        type="text" 
-                        placeholder="Название" 
-                        minlength="2"
-                        maxlength="30"
-                        class="form__input form__input_type_place-name">
-                        <span class="form__input-text-error"></span>
+                               id="input-place-name"
+                               type="text" 
+                               placeholder="Название" 
+                               minlength="2"
+                               maxlength="30"
+                               class="form__input form__input_type_place-name">
+                        <span id="input-place-name-error" class="form__input-text-error"></span>
 
-                    <input required
-                        type="url" 
-                        placeholder="Ссылка на картинку" 
-                        class="form__input form__input_type_url">
-                        <span class="form__input-text-error"></span>
+                        <input required
+                               id="input-url"
+                               type="url" 
+                               placeholder="Ссылка на картинку" 
+                               class="form__input form__input_type_url">
+                        <span id="input-url-error" class="form__input-text-error"></span>
 
-                        <button type="submit" disabled class="form__btn form__btn_disabled">Создать</button>
+                        <button type="submit" class="form__btn">Создать</button>
                     </form>
                 </div>
             </div>
@@ -102,6 +106,7 @@
             </div>
         </li>
     </template> 
+    <script src="./scripts/validate.js"></script>
     <script src="./scripts/script.js"></script>
 </body>
 </html>
