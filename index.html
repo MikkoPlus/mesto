@@ -35,9 +35,21 @@
                     <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
                     <h4 class="popup__title">Редактировать профиль</h4>
                     <form class="form" id="edit-profile-form">
-                        <input type="text" maxlength="19" class="form__input form__input_type_name">
-                        <input type="text" maxlength="30" class="form__input form__input_type_job">
-                        <button class="form__btn">Сохранить</button>
+                        <input required
+                               type="text" 
+                               minlength="2"
+                               maxlength="20" 
+                               class="form__input form__input_type_name">
+                        <span class="form__input-text-error"></span>
+
+                        <input required
+                               type="text" 
+                               minlength="2"
+                               maxlength="200" 
+                               class="form__input input__error form__input_type_job">
+                        <span class="form__input-text-error"></span>
+                        
+                        <button type="submit" class="form__btn">Сохранить</button>
                     </form>
                 </div>
             </div>
@@ -45,10 +57,23 @@
                 <div class="popup__window popup__window_type_form">
                     <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
                     <h4 class="popup__title">Новое место</h4>
+
                     <form class="form" id="add-card-form">
-                        <input type="text" placeholder="Название" class="form__input form__input_type_place-name">
-                        <input type="text" placeholder="Ссылка на картинку" class="form__input form__input_type_url">
-                        <button class="form__btn">Создать</button>
+                        <input required
+                        type="text" 
+                        placeholder="Название" 
+                        minlength="2"
+                        maxlength="30"
+                        class="form__input form__input_type_place-name">
+                        <span class="form__input-text-error"></span>
+
+                    <input required
+                        type="url" 
+                        placeholder="Ссылка на картинку" 
+                        class="form__input form__input_type_url">
+                        <span class="form__input-text-error"></span>
+
+                        <button type="submit" disabled class="form__btn form__btn_disabled">Создать</button>
                     </form>
                 </div>
             </div>

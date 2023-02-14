@@ -8,7 +8,8 @@
     font-weight: 400;
     font-size: 14px;
     color: #000000;
-    margin-top: 30px;
+    margin-top: 13px;
+    width: 100%;
 }
 
 .form__input:focus {
