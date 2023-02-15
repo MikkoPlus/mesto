@@ -20,7 +20,8 @@ window.addEventListener('DOMContentLoaded',() => {
           inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
           inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
           cardTemplate = document.querySelector('#place-card-template').content,
-          placeCardContainer = document.querySelector('.places__list');
+          placeCardContainer = document.querySelector('.places__list'),
+          popupList = Array.from(popupSection.querySelectorAll('.popup'));
 
     // open and close popup functions
 
@@ -31,6 +32,47 @@ window.addEventListener('DOMContentLoaded',() => {
     function closePopup (popup) {
         popup.classList.remove('popup_active');
     }
+
+    function isSomePopupVisible (popupList) {
+        return popupList.some(popup => {
+            return popup.classList.contains('popup_active');
+        });
+    }
+
+    function closeEveryPopup (popupList) {
+        popupList.forEach(popup => {
+            closePopup(popup);
+        });
+    }
+
+    function closePopupOnEscButton (popupList) {
+        window.addEventListener('keydown', (e) => {
+            if (event.key === 'Escape') {
+                if (isSomePopupVisible(popupList)) {
+                    closeEveryPopup (popupList);
+                }
+            }
+        });
+    }
+
+    function isClickWasOnOverlay (eventElement) {
+        return eventElement.classList.contains('popup');
+    }
+
+
+    function closePopupOnOverlayClick () {
+        let clickOnOverlay = false;
+
+        popupSection.addEventListener('mousedown', (evt) => {
+            clickOnOverlay = isClickWasOnOverlay(evt.target);
+        });
+        popupSection.addEventListener('mouseup', (evt) => {
+            if (isClickWasOnOverlay(evt.target) && clickOnOverlay) {
+                closeEveryPopup(popupList);
+            }
+        });
+    }
+    closePopupOnOverlayClick ();
 
     // form submit functions
 
@@ -172,5 +214,7 @@ window.addEventListener('DOMContentLoaded',() => {
             closePopup(currentPopup);
         });
     });
+
+    closePopupOnEscButton (popupList);
 
 });
