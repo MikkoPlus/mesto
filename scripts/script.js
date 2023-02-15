@@ -55,10 +55,11 @@ window.addEventListener('DOMContentLoaded',() => {
         });
     }
 
+    // Функция проверяет была ли нажата и отжата лкм на темном фоне попапа, и если одно из условий не срабатывает, попап не закрывется
+
     function isClickWasOnOverlay (eventElement) {
         return eventElement.classList.contains('popup');
     }
-
 
     function closePopupOnOverlayClick () {
         let clickOnOverlay = false;
@@ -72,7 +73,7 @@ window.addEventListener('DOMContentLoaded',() => {
             }
         });
     }
-    closePopupOnOverlayClick ();
+    
 
     // form submit functions
 
@@ -215,6 +216,7 @@ window.addEventListener('DOMContentLoaded',() => {
         });
     });
 
+    closePopupOnOverlayClick ();
     closePopupOnEscButton (popupList);
 
 });
