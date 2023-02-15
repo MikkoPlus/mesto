@@ -12,13 +12,16 @@ function enableValidation (config) {
     formList.forEach(formElement => {
         formElement.addEventListener('submit', (event) => {
             event.preventDefault();
-            setTimeout(function() {
-                toggleButtonState(formElement, config);
-            }, 500);
+            disableButtonAfterSubmitForm(formElement, config);
         });
         toggleButtonState(formElement, config);
         setEventListenersToFormInputs(formElement, config);
     });
+}
+
+function disableButtonAfterSubmitForm (FormElement, config) {
+    const submitButton = FormElement.querySelector(config.submitButtonSelector);
+    disableSubmitButton(config, submitButton);
 }
 
 function isFormInputsValid (inputList) {
@@ -27,12 +30,12 @@ function isFormInputsValid (inputList) {
     });
 }
 
-function disableSubmitButton (btn, config) {
+function disableSubmitButton (config, btn) {
     btn.classList.add(config.inactiveButtonClass);
     btn.disabled = true;
 }
 
-function enableSubmitButton (btn, config) {
+function enableSubmitButton (config, btn) {
     btn.classList.remove(config.inactiveButtonClass);
     btn.disabled = false;
 }
@@ -42,9 +45,9 @@ function toggleButtonState (formElement, config) {
           inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
 
     if (!isFormInputsValid(inputList)) {
-        disableSubmitButton(submitButton, config);
+        disableSubmitButton(config, submitButton);
     } else {
-        enableSubmitButton(submitButton, config);
+        enableSubmitButton(config, submitButton);
     }
 }
 
