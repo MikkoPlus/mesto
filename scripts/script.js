@@ -215,8 +215,6 @@ window.addEventListener('DOMContentLoaded',() => {
             closePopup(currentPopup);
         });
     });
-
     closePopupOnOverlayClick ();
     closePopupOnEscButton (popupList);
-
 });
