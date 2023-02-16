@@ -124,53 +124,53 @@ window.addEventListener('DOMContentLoaded',() => {
     }
 
     function createNewCard(url, descr) {
-        const placeCardElement= cardTemplate.querySelector('.place-card').cloneNode(true),
-              placeCardImage = placeCardElement.querySelector('.place-card__image'),
-              placeCardDescr = placeCardElement.querySelector('.place-card__descr');
+        const cardElement= cardTemplate.querySelector('.place-card').cloneNode(true),
+              cardImage = cardElement.querySelector('.place-card__image'),
+              cardDescr = cardElement.querySelector('.place-card__descr'),
+              cardTrashBagIcon = cardElement.querySelector('.place-card__trash-bag'),
+              cardHeartIcon = cardElement.querySelector('.place-card__heart');
 
-        placeCardImage.src = url;
-        placeCardImage.setAttribute('alt', descr);
-        placeCardDescr.textContent = descr;
-        addEventListenerToCard(placeCardElement);
-        return placeCardElement;
+        cardImage.src = url;
+        cardImage.setAttribute('alt', descr);
+        cardDescr.textContent = descr;
+        addEventListenerToCardElement(cardTrashBagIcon, deleteCard);
+        addEventListenerToCardElement(cardHeartIcon, changeHeartColor);
+        addEventListenerToCardElement(cardImage, openFullScreenImg);
+        return cardElement;
     }
 
     function renderCard(card) {
         placeCardContainer.prepend(card);
     }
 
-    function addEventListenerToCard (card) {
-        card.addEventListener('click', (event) => {
-            event.preventDefault();
+    // Functions of card events
 
-            const targetClickEl = event.target,
-                    cardParent = card.parentElement;
-                    
-
-            if (targetClickEl.classList.contains('place-card__trash-bag')) {
-                cardParent.removeChild(targetClickEl.closest('.place-card')); 
-
-            } else if (targetClickEl.classList.contains('place-card__heart')) {
-                changeHeartColor(targetClickEl);
-
-            } else if (targetClickEl.classList.contains('place-card__image')) {
-                const cardName = card.querySelector('.place-card__descr').textContent,
-                      cardLink = targetClickEl.getAttribute('src');
-                openFullscreenImg(cardName, cardLink);
-            }
-        });
+    function addEventListenerToCardElement (cardElement, elementFunction) {
+        cardElement.addEventListener('click', elementFunction);
     }
 
-    function openFullscreenImg (cardName, cardLink) {
-        fullscreenImage.src = cardLink;
-        fullscreenImage.alt = cardName;
-        fullscreenDescr.textContent = cardName;
-        openPopup(fullscreenImagePopup);
-    }
+    const deleteCard = (event) => {
+        const currentCard = event.target.closest('.place-card'),
+              cardList = currentCard.parentElement;
+        
+        cardList.removeChild(currentCard);
+    };
 
-    function changeHeartColor(heart) {
+    const changeHeartColor = (event) => {
+        const heart = event.target;
         heart.classList.toggle('place-card__heart_like');
-    }
+    };
+
+    const openFullScreenImg = (event) => {
+        const image = event.target,
+              imagePath = image.getAttribute('src'),
+              imageDescription = image.getAttribute('alt');
+        
+        fullscreenImage.src = imagePath;
+        fullscreenImage.alt = imageDescription;
+        fullscreenDescr.textContent = imageDescription;
+        openPopup(fullscreenImagePopup);
+    };
 
     // render initial cards
 
@@ -201,8 +201,7 @@ window.addEventListener('DOMContentLoaded',() => {
         }
         ]; 
 
-    initialCards.forEach(card => {
-        const {name, link} = card;
+    initialCards.forEach(({name, link}) => {
         renderCard(createNewCard(link, name));
     });
 
@@ -215,5 +214,6 @@ window.addEventListener('DOMContentLoaded',() => {
             closePopup(currentPopup);
         });
     });
+    // Можно получить фидбек по поводу функции закрытия попапа по оверлею? Подскажите как можно улучшить код, пожалуйста :)
     closePopupOnOverlayClick ();
 });
