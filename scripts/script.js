@@ -13,8 +13,8 @@ window.addEventListener('DOMContentLoaded',() => {
           inputJob = editProfilePopup.querySelector('.form__input_type_job'),
           profileName = document.querySelector('.profile__name'),
           profileJob = document.querySelector('.profile__job'),
-          formEditProfile = editProfilePopup.querySelector('#edit-profile-form'),
-          formAddCard = popupSection.querySelector('#add-card-form'),
+          formEditProfile = document.forms['edit-profile'],
+          formAddCard = document.forms['add-card'],
           editProfileOpenPopupBtn = document.querySelector('.profile__edit-btn'),
           addCardOpenPopupBtn = document.querySelector('.profile__add-button'),
           inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
@@ -25,12 +25,22 @@ window.addEventListener('DOMContentLoaded',() => {
 
     // open and close popup functions
 
+    const closeByEscape = (evt) => {
+        if (evt.key === 'Escape') {
+            const openedPopup = document.querySelector('.popup_active');
+            closePopup(openedPopup);
+            console.log(1);
+        }
+    };
+
     function openPopup (popup) {
         popup.classList.add('popup_active');
+        document.addEventListener('keydown', closeByEscape);
     }
 
     function closePopup (popup) {
         popup.classList.remove('popup_active');
+        document.removeEventListener('keydown', closeByEscape);
     }
 
     function isSomePopupVisible (popupList) {
@@ -45,19 +55,9 @@ window.addEventListener('DOMContentLoaded',() => {
         });
     }
 
-    function closePopupOnEscButton (popupList) {
-        window.addEventListener('keydown', (e) => {
-            if (event.key === 'Escape') {
-                if (isSomePopupVisible(popupList)) {
-                    closeEveryPopup (popupList);
-                }
-            }
-        });
-    }
-
     // Функция проверяет была ли нажата и отжата лкм на темном фоне попапа, и если одно из условий не срабатывает, попап не закрывется
 
-    function isClickWasOnOverlay (eventElement) {
+    function wasClickOnOverlay (eventElement) {
         return eventElement.classList.contains('popup');
     }
 
@@ -65,10 +65,10 @@ window.addEventListener('DOMContentLoaded',() => {
         let clickOnOverlay = false;
 
         popupSection.addEventListener('mousedown', (evt) => {
-            clickOnOverlay = isClickWasOnOverlay(evt.target);
+            clickOnOverlay = wasClickOnOverlay(evt.target);
         });
         popupSection.addEventListener('mouseup', (evt) => {
-            if (isClickWasOnOverlay(evt.target) && clickOnOverlay) {
+            if (wasClickOnOverlay(evt.target) && clickOnOverlay) {
                 closeEveryPopup(popupList);
             }
         });
@@ -216,5 +216,4 @@ window.addEventListener('DOMContentLoaded',() => {
         });
     });
     closePopupOnOverlayClick ();
-    closePopupOnEscButton (popupList);
 });
