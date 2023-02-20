@@ -20,8 +20,7 @@ window.addEventListener('DOMContentLoaded',() => {
           inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
           inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
           cardTemplate = document.querySelector('#place-card-template').content,
-          placeCardContainer = document.querySelector('.places__list'),
-          popupList = Array.from(popupSection.querySelectorAll('.popup'));
+          placeCardContainer = document.querySelector('.places__list');
 
     // open and close popup functions
 
@@ -29,7 +28,6 @@ window.addEventListener('DOMContentLoaded',() => {
         if (evt.key === 'Escape') {
             const openedPopup = document.querySelector('.popup_active');
             closePopup(openedPopup);
-            console.log(1);
         }
     };
 
@@ -41,18 +39,6 @@ window.addEventListener('DOMContentLoaded',() => {
     function closePopup (popup) {
         popup.classList.remove('popup_active');
         document.removeEventListener('keydown', closeByEscape);
-    }
-
-    function isSomePopupVisible (popupList) {
-        return popupList.some(popup => {
-            return popup.classList.contains('popup_active');
-        });
-    }
-
-    function closeEveryPopup (popupList) {
-        popupList.forEach(popup => {
-            closePopup(popup);
-        });
     }
 
     // Функция проверяет была ли нажата и отжата лкм на темном фоне попапа, и если одно из условий не срабатывает, попап не закрывется
@@ -69,12 +55,11 @@ window.addEventListener('DOMContentLoaded',() => {
         });
         popupSection.addEventListener('mouseup', (evt) => {
             if (wasClickOnOverlay(evt.target) && clickOnOverlay) {
-                closeEveryPopup(popupList);
+                closePopup(evt.target);
             }
         });
     }
     
-
     // form submit functions
 
     function submitAddCardForm (form) {
@@ -134,8 +119,8 @@ window.addEventListener('DOMContentLoaded',() => {
         cardImage.setAttribute('alt', descr);
         cardDescr.textContent = descr;
         addEventListenerToCardElement(cardTrashBagIcon, deleteCard);
-        addEventListenerToCardElement(cardHeartIcon, changeHeartColor);
-        addEventListenerToCardElement(cardImage, openFullScreenImg);
+        addEventListenerToCardElement(cardHeartIcon, () => changeHeartColor(cardHeartIcon));
+        addEventListenerToCardElement(cardImage, () => openFullScreenImg(url, descr));
         return cardElement;
     }
 
@@ -156,21 +141,16 @@ window.addEventListener('DOMContentLoaded',() => {
         cardList.removeChild(currentCard);
     };
 
-    const changeHeartColor = (event) => {
-        const heart = event.target;
-        heart.classList.toggle('place-card__heart_like');
+    const changeHeartColor = (heartElement) => {
+        heartElement.classList.toggle('place-card__heart_like');
     };
 
-    const openFullScreenImg = (event) => {
-        const image = event.target,
-              imagePath = image.getAttribute('src'),
-              imageDescription = image.getAttribute('alt');
-        
+    function openFullScreenImg (imagePath, imageDescription) {
         fullscreenImage.src = imagePath;
         fullscreenImage.alt = imageDescription;
         fullscreenDescr.textContent = imageDescription;
         openPopup(fullscreenImagePopup);
-    };
+    }
 
     // render initial cards
 
@@ -214,6 +194,6 @@ window.addEventListener('DOMContentLoaded',() => {
             closePopup(currentPopup);
         });
     });
-    // Можно получить фидбек по поводу функции закрытия попапа по оверлею? Подскажите как можно улучшить код, пожалуйста :)
+
     closePopupOnOverlayClick ();
 });
