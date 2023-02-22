@@ -1,5 +1,7 @@
 'use strict';
 
+import Card from './Card.js';
+
 window.addEventListener('DOMContentLoaded',() => {
 
     const popupSection = document.querySelector('.popups'),
@@ -19,7 +21,7 @@ window.addEventListener('DOMContentLoaded',() => {
           addCardOpenPopupBtn = document.querySelector('.profile__add-button'),
           inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
           inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
-          cardTemplate = document.querySelector('#place-card-template').content,
+          cardTemplateSelector = '#place-card-template',
           placeCardContainer = document.querySelector('.places__list');
 
     // open and close popup functions
@@ -65,7 +67,7 @@ window.addEventListener('DOMContentLoaded',() => {
     function submitAddCardForm (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            createUserCard(); 
+            createUserCard(inputCardUrl.value, inputCardName.value); 
             form.reset();
             closePopup(addCardPopup);
         });
@@ -102,48 +104,20 @@ window.addEventListener('DOMContentLoaded',() => {
 
     // add user cards functions
 
-    function createUserCard() {
-        const newCard = createNewCard(inputCardUrl.value, inputCardName.value);
-
-        renderCard(newCard);
+    function createUserDataObject (url, descr) {
+        return {
+            imageDescription: `${descr}`,
+            imagePath: `${url}`,
+        };
     }
 
-    function createNewCard(url, descr) {
-        const cardElement= cardTemplate.querySelector('.place-card').cloneNode(true),
-              cardImage = cardElement.querySelector('.place-card__image'),
-              cardDescr = cardElement.querySelector('.place-card__descr'),
-              cardTrashBagIcon = cardElement.querySelector('.place-card__trash-bag'),
-              cardHeartIcon = cardElement.querySelector('.place-card__heart');
+    function createUserCard(url, descr) {
+        const userData = createUserDataObject(url, descr),
+              card = new Card(userData, cardTemplateSelector),
+              cardElement = card.generateCard();
 
-        cardImage.src = url;
-        cardImage.setAttribute('alt', descr);
-        cardDescr.textContent = descr;
-        addEventListenerToCardElement(cardTrashBagIcon, deleteCard);
-        addEventListenerToCardElement(cardHeartIcon, () => changeHeartColor(cardHeartIcon));
-        addEventListenerToCardElement(cardImage, () => openFullScreenImg(url, descr));
-        return cardElement;
+        renderCard(cardElement, placeCardContainer);
     }
-
-    function renderCard(card) {
-        placeCardContainer.prepend(card);
-    }
-
-    // Functions of card events
-
-    function addEventListenerToCardElement (cardElement, elementFunction) {
-        cardElement.addEventListener('click', elementFunction);
-    }
-
-    const deleteCard = (event) => {
-        const currentCard = event.target.closest('.place-card'),
-              cardList = currentCard.parentElement;
-        
-        cardList.removeChild(currentCard);
-    };
-
-    const changeHeartColor = (heartElement) => {
-        heartElement.classList.toggle('place-card__heart_like');
-    };
 
     function openFullScreenImg (imagePath, imageDescription) {
         fullscreenImage.src = imagePath;
@@ -154,35 +128,42 @@ window.addEventListener('DOMContentLoaded',() => {
 
     // render initial cards
 
+    function renderCard(cardElement, parentElement) {
+        parentElement.prepend(cardElement);
+    }
+
     const initialCards = [
         {
-            name: 'Atuh Beach',
-            link: './images/places/Atuh-beach.webp'
+            imageDescription: 'Atuh Beach',
+            imagePath: './images/places/Atuh-beach.webp'
         },
         {
-            name: 'Rice fields',
-            link: './images/places/Rice-fields.webp'
+            imageDescription: 'Rice fields',
+            imagePath: './images/places/Rice-fields.webp'
         },
         {
-            name: 'Kuta beach',
-            link: './images/places/Kuta-beach.webp'
+            imageDescription: 'Kuta beach',
+            imagePath: './images/places/Kuta-beach.webp'
         },
         {
-            name: 'Nusa-Penida island',
-            link: './images/places/Nusa-Penida.webp'
+            imageDescription: 'Nusa-Penida island',
+            imagePath: './images/places/Nusa-Penida.webp'
         },
         {
-            name: 'Mount Batur',
-            link: './images/places/Mount-Batur.webp'
+            imageDescription: 'Mount Batur',
+            imagePath: './images/places/Mount-Batur.webp'
         },
         {
-            name: 'Ubud',
-            link: './images/places/Ubud.webp'
+            imageDescription: 'Ubud',
+            imagePath: './images/places/Ubud.webp'
         }
         ]; 
 
-    initialCards.forEach(({name, link}) => {
-        renderCard(createNewCard(link, name));
+    initialCards.forEach((item) => {
+        const card = new Card(item, cardTemplateSelector);
+        const cardElement = card.generateCard();
+
+        renderCard(cardElement, placeCardContainer);
     });
 
     submitAddCardForm(formAddCard);
