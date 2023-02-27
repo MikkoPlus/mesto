@@ -1,11 +1,12 @@
 export default class Card {
-    constructor(data, templateSelector) {
+    constructor(data, templateSelector, openFullScreenImgFunction) {
         this._imagePath = data.imagePath;
         this._imageDescription = data.imageDescription;
         this._trashBagSelector = '.place-card__trash-bag';
         this._heartElementSelector = '.place-card__heart';
         this._imageSelector = '.place-card__image';
         this._cardDescriptionSelector = '.place-card__descr';
+        this._openFullScreenImage = openFullScreenImgFunction;
         this._templateSelector = templateSelector;
     }
 
@@ -26,43 +27,9 @@ export default class Card {
 
         this._heartElement.addEventListener('click', () => this._changeHeartColor());
         this._trashBagIcon.addEventListener('click', () => this._deleteCard());
-        this._cardImage.addEventListener('click', () => this._openFullScreenImage());
-    }
-    
-    _popupHandler(popup) {
-        const closeByEscape = (evt) => {
-            if (evt.key === 'Escape') {
-                const openedPopup = document.querySelector('.popup_active');
-                closePopup(openedPopup);
-            }
-        };
-        function openPopup(popup) {
-            popup.classList.add('popup_active');
-            document.addEventListener('keydown', closeByEscape);
-        }
-    
-        function closePopup(popup) {
-            popup.classList.remove('popup_active');
-            document.removeEventListener('keydown', closeByEscape);
-        }
-
-        openPopup(popup);
-    }
-
-
-
-
-    _openFullScreenImage() {
-        const popup = document.querySelector('.popup_fullscreen-img'),
-              popupImage = popup.querySelector('.popup__fullscreen-image'),
-              popupDescription = popup.querySelector('.popup__descr');
-
-        popupImage.setAttribute('src', this._imagePath);
-        popupImage.setAttribute('alt', this._imageDescr);
-        popupDescription.textContent = this._imageDescr;
-
-        this._popupHandler(popup);
-
+        this._cardImage.addEventListener('click', () => {
+            this._openFullScreenImage(this._imagePath, this._imageDescription);
+        });
     }
 
     _deleteCard() {

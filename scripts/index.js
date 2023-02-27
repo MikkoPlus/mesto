@@ -1,8 +1,7 @@
 'use strict';
-
+import FormValidator from "./FormValidator.js";
 import Card from './Card.js';
-
-window.addEventListener('DOMContentLoaded',() => {
+window.addEventListener('DOMContentLoaded', () => {
 
     const popupSection = document.querySelector('.popups'),
           editProfilePopup = popupSection.querySelector('#edit-profile-popup'),
@@ -22,7 +21,43 @@ window.addEventListener('DOMContentLoaded',() => {
           inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
           inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
           cardTemplateSelector = '#place-card-template',
-          placeCardContainer = document.querySelector('.places__list');
+          placeCardContainer = document.querySelector('.places__list'),
+          formList = Array.from(document.forms),
+          validateConfig = {
+            formSelector: '.form',
+            inputSelector: '.form__input',
+            submitButtonSelector: '.form__btn',
+            inactiveButtonClass: 'form__btn_disabled',
+            inputErrorClass: 'form__input_type_error'
+          },
+          initialCards = [
+            {
+                imageDescription: 'Atuh Beach',
+                imagePath: './images/places/Atuh-beach.webp'
+            },
+            {
+                imageDescription: 'Rice fields',
+                imagePath: './images/places/Rice-fields.webp'
+            },
+            {
+                imageDescription: 'Kuta beach',
+                imagePath: './images/places/Kuta-beach.webp'
+            },
+            {
+                imageDescription: 'Nusa-Penida island',
+                imagePath: './images/places/Nusa-Penida.webp'
+            },
+            {
+                imageDescription: 'Mount Batur',
+                imagePath: './images/places/Mount-Batur.webp'
+            },
+            {
+                imageDescription: 'Ubud',
+                imagePath: './images/places/Ubud.webp'
+            }
+          ]; 
+
+
 
     // open and close popup functions
 
@@ -33,141 +68,106 @@ window.addEventListener('DOMContentLoaded',() => {
         }
     };
 
-    function openPopup (popup) {
+    const openPopup = (popup) => {
         popup.classList.add('popup_active');
         document.addEventListener('keydown', closeByEscape);
-    }
+    };
 
-    function closePopup (popup) {
+    const closePopup = (popup) => {
         popup.classList.remove('popup_active');
         document.removeEventListener('keydown', closeByEscape);
-    }
+    };
 
     // Функция проверяет была ли нажата и отжата лкм на темном фоне попапа, и если одно из условий не срабатывает, попап не закрывется
 
-    function wasClickOnOverlay (eventElement) {
+    const wasClickOnOverlay = (eventElement) => {
         return eventElement.classList.contains('popup');
-    }
+    };
 
-    function closePopupOnOverlayClick () {
+    const closePopupOnOverlayClick = () => {
         let clickOnOverlay = false;
 
-        popupSection.addEventListener('mousedown', (evt) => {
-            clickOnOverlay = wasClickOnOverlay(evt.target);
-        });
-        popupSection.addEventListener('mouseup', (evt) => {
+        popupSection.addEventListener('mousedown', evt => clickOnOverlay = wasClickOnOverlay(evt.target));
+        popupSection.addEventListener('mouseup', evt => {
             if (wasClickOnOverlay(evt.target) && clickOnOverlay) {
                 closePopup(evt.target);
             }
         });
-    }
+    };
     
     // form submit functions
 
-    function submitAddCardForm (form) {
+    const submitAddCardForm = (form) => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             createUserCard(inputCardUrl.value, inputCardName.value); 
             form.reset();
             closePopup(addCardPopup);
         });
-    }
+    };
 
-    function submitEditProfileForm (form) {
+    const submitEditProfileForm = (form) => {
         pasteValueToEditFormInputs (form);
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             editProfileData();
             closePopup(editProfilePopup);
         });
-    }
+    };
 
-    function pasteValueToEditFormInputs () {
+    const pasteValueToEditFormInputs = () =>{
         inputName.value = profileName.textContent;
         inputJob.value = profileJob.textContent;
-    }
+    };
         
-    function editProfileData () {
+    const editProfileData = () => {
         if (inputName.value !== '' && inputJob.value !== '') {
             profileJob.textContent = inputJob.value;
             profileName.textContent = inputName.value;
         }
-    }
-
-    editProfileOpenPopupBtn.addEventListener('click', (e) => {
-        openPopup(editProfilePopup);
-    });
-
-    addCardOpenPopupBtn.addEventListener('click', (e) => {
-        openPopup(addCardPopup);
-    });
+    };
 
     // add user cards functions
 
-    function createUserDataObject (url, descr) {
+    const createUserDataObject = (url, descr) => {
         return {
-            imageDescription: `${descr}`,
-            imagePath: `${url}`,
+            imageDescription: descr,
+            imagePath: url
         };
-    }
+    };
 
-    function createUserCard(url, descr) {
+    const createUserCard = (url, descr) => {
         const userData = createUserDataObject(url, descr),
-              card = new Card(userData, cardTemplateSelector),
+              card = new Card(userData, cardTemplateSelector, openFullScreenImg),
               cardElement = card.generateCard();
 
         renderCard(cardElement, placeCardContainer);
-    }
+    };
 
-    function openFullScreenImg (imagePath, imageDescription) {
+    const openFullScreenImg = (imagePath, imageDescription) => {
         fullscreenImage.src = imagePath;
         fullscreenImage.alt = imageDescription;
         fullscreenDescr.textContent = imageDescription;
         openPopup(fullscreenImagePopup);
-    }
+    };
 
     // render initial cards
 
-    function renderCard(cardElement, parentElement) {
+    const renderCard = (cardElement, parentElement) => {
         parentElement.prepend(cardElement);
-    }
+    };
 
-    const initialCards = [
-        {
-            imageDescription: 'Atuh Beach',
-            imagePath: './images/places/Atuh-beach.webp'
-        },
-        {
-            imageDescription: 'Rice fields',
-            imagePath: './images/places/Rice-fields.webp'
-        },
-        {
-            imageDescription: 'Kuta beach',
-            imagePath: './images/places/Kuta-beach.webp'
-        },
-        {
-            imageDescription: 'Nusa-Penida island',
-            imagePath: './images/places/Nusa-Penida.webp'
-        },
-        {
-            imageDescription: 'Mount Batur',
-            imagePath: './images/places/Mount-Batur.webp'
-        },
-        {
-            imageDescription: 'Ubud',
-            imagePath: './images/places/Ubud.webp'
-        }
-        ]; 
+    const addValidationToForm = (formElement) => {
+        const formValidate = new FormValidator(validateConfig, formElement);
+        formValidate.enableValidation();
+    };
 
     initialCards.forEach((item) => {
-        const card = new Card(item, cardTemplateSelector);
+        const card = new Card(item, cardTemplateSelector, openFullScreenImg);
         const cardElement = card.generateCard();
 
         renderCard(cardElement, placeCardContainer);
     });
-
-    submitAddCardForm(formAddCard);
-    submitEditProfileForm(formEditProfile);
 
     popupCloseIcons.forEach(popupCloseButton => {
         popupCloseButton.addEventListener('click', (e) => {
@@ -176,5 +176,12 @@ window.addEventListener('DOMContentLoaded',() => {
         });
     });
 
-    closePopupOnOverlayClick ();
+    editProfileOpenPopupBtn.addEventListener('click', () => openPopup(editProfilePopup));
+    addCardOpenPopupBtn.addEventListener('click', () =>  openPopup(addCardPopup));
+
+    formList.forEach(form => addValidationToForm(form));
+
+    submitAddCardForm(formAddCard);
+    submitEditProfileForm(formEditProfile);
+    closePopupOnOverlayClick();
 });
