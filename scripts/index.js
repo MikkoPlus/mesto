@@ -10,7 +10,6 @@ window.addEventListener('DOMContentLoaded', () => {
           fullscreenImagePopup = popupSection.querySelector('#open-image-popup'),
           fullscreenImage = fullscreenImagePopup.querySelector('.popup__fullscreen-image'),
           fullscreenDescr = fullscreenImagePopup.querySelector('.popup__descr'),
-          popupCloseIcons = popupSection.querySelectorAll('.popup__close'),
           inputName = editProfilePopup.querySelector('.form__input_type_name'),
           inputJob = editProfilePopup.querySelector('.form__input_type_job'),
           profileName = document.querySelector('.profile__name'),
@@ -58,8 +57,6 @@ window.addEventListener('DOMContentLoaded', () => {
             }
           ]; 
 
-
-
     // open and close popup functions
 
     const closeByEscape = (evt) => {
@@ -84,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const submitAddCardForm = (form) => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            createUserCard(inputCardUrl.value, inputCardName.value); 
+            createUserCard(inputCardUrl.value, inputCardName.value);
             form.reset();
             closePopup(addCardPopup);
         });
