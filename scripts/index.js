@@ -4,6 +4,7 @@ import Card from './Card.js';
 window.addEventListener('DOMContentLoaded', () => {
 
     const popupSection = document.querySelector('.popups'),
+          popups = popupSection.querySelectorAll('.popup'),
           editProfilePopup = popupSection.querySelector('#edit-profile-popup'),
           addCardPopup = popupSection.querySelector('#add-card-popup'),
           fullscreenImagePopup = popupSection.querySelector('#open-image-popup'),
@@ -77,23 +78,6 @@ window.addEventListener('DOMContentLoaded', () => {
         popup.classList.remove('popup_active');
         document.removeEventListener('keydown', closeByEscape);
     };
-
-    // Функция проверяет была ли нажата и отжата лкм на темном фоне попапа, и если одно из условий не срабатывает, попап не закрывется
-
-    const wasClickOnOverlay = (eventElement) => {
-        return eventElement.classList.contains('popup');
-    };
-
-    const closePopupOnOverlayClick = () => {
-        let clickOnOverlay = false;
-
-        popupSection.addEventListener('mousedown', evt => clickOnOverlay = wasClickOnOverlay(evt.target));
-        popupSection.addEventListener('mouseup', evt => {
-            if (wasClickOnOverlay(evt.target) && clickOnOverlay) {
-                closePopup(evt.target);
-            }
-        });
-    };
     
     // form submit functions
 
@@ -107,7 +91,6 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     const submitEditProfileForm = (form) => {
-        pasteValueToEditFormInputs (form);
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             editProfileData();
@@ -129,6 +112,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // add user cards functions
 
+    const openFullScreenImg = (imagePath, imageDescription) => {
+        fullscreenImage.src = imagePath;
+        fullscreenImage.alt = imageDescription;
+        fullscreenDescr.textContent = imageDescription;
+        openPopup(fullscreenImagePopup);
+    };
+
     const createUserDataObject = (url, descr) => {
         return {
             imageDescription: descr,
@@ -137,18 +127,9 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     const createUserCard = (url, descr) => {
-        const userData = createUserDataObject(url, descr),
-              card = new Card(userData, cardTemplateSelector, openFullScreenImg),
-              cardElement = card.generateCard();
-
-        renderCard(cardElement, placeCardContainer);
-    };
-
-    const openFullScreenImg = (imagePath, imageDescription) => {
-        fullscreenImage.src = imagePath;
-        fullscreenImage.alt = imageDescription;
-        fullscreenDescr.textContent = imageDescription;
-        openPopup(fullscreenImagePopup);
+        const userData = createUserDataObject(url, descr);
+  
+        renderCard(createCard(userData), placeCardContainer);
     };
 
     // render initial cards
@@ -157,31 +138,44 @@ window.addEventListener('DOMContentLoaded', () => {
         parentElement.prepend(cardElement);
     };
 
+    const createCard = (obj) => {
+        const card = new Card(obj, cardTemplateSelector, openFullScreenImg);
+        const cardElement = card.generateCard();
+
+        return cardElement;
+    };
+
     const addValidationToForm = (formElement) => {
         const formValidate = new FormValidator(validateConfig, formElement);
         formValidate.enableValidation();
     };
 
     initialCards.forEach((item) => {
-        const card = new Card(item, cardTemplateSelector, openFullScreenImg);
-        const cardElement = card.generateCard();
-
-        renderCard(cardElement, placeCardContainer);
+         renderCard(createCard(item), placeCardContainer);
     });
 
-    popupCloseIcons.forEach(popupCloseButton => {
-        popupCloseButton.addEventListener('click', (e) => {
-            const currentPopup = e.target.closest('.popup');
-            closePopup(currentPopup);
+    popups.forEach((popup) => {
+        popup.addEventListener('mousedown', (evt) => {
+            if (evt.target.classList.contains('popup_opened')) {
+                closePopup(popup);
+            }
+            if (evt.target.classList.contains('popup__close')) {
+              closePopup(popup);
+            }
         });
     });
 
-    editProfileOpenPopupBtn.addEventListener('click', () => openPopup(editProfilePopup));
+    editProfileOpenPopupBtn.addEventListener('click', () => {
+        pasteValueToEditFormInputs();
+        openPopup(editProfilePopup); 
+    });
     addCardOpenPopupBtn.addEventListener('click', () =>  openPopup(addCardPopup));
 
     formList.forEach(form => addValidationToForm(form));
 
     submitAddCardForm(formAddCard);
     submitEditProfileForm(formEditProfile);
-    closePopupOnOverlayClick();
 });
+
+// Спасибо за полезные коментарии по моей работе, можете мне подсказать одну вещь?
+// Не могу понять как можно обратиться к методу класса валидации при открытии попапа, чтобы вызвать метод отчистки ошибок

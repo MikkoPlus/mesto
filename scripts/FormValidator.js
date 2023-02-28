@@ -20,6 +20,11 @@ export default class FormValidator {
         this._setEventListenersToFormInputs();
     }
 
+    resetValidation() {
+        this._disableSubmitButton();
+        this._inputList.forEach(inputElement => this._hideInputError(inputElement));
+    }
+
     _checkInputValidity(inputElement) {
         if (!inputElement.validity.valid) {
             this._showInputError(inputElement, inputElement.validationMessage);

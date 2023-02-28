@@ -23,7 +23,6 @@ export default class Card {
     _setEventListenersToCard() {
         this._heartElement = this._element.querySelector(this._heartElementSelector);
         this._trashBagIcon = this._element.querySelector(this._trashBagSelector);
-        this._cardImage = this._element.querySelector(this._imageSelector);
 
         this._heartElement.addEventListener('click', () => this._changeHeartColor());
         this._trashBagIcon.addEventListener('click', () => this._deleteCard());
@@ -42,18 +41,13 @@ export default class Card {
 
     generateCard() {
         this._element = this._getTemplate();
-
+        this._cardImage = this._element.querySelector(this._imageSelector);
+        this._cardDescription = this._element .querySelector(this._cardDescriptionSelector);
         this._setEventListenersToCard();
 
-        this._element
-        .querySelector(this._imageSelector)
-        .setAttribute('src', this._imagePath);
-        this._element
-        .querySelector(this._imageSelector)
-        .setAttribute('alt', this._imageDescription);
-        this._element
-        .querySelector(this._cardDescriptionSelector)
-        .textContent = this._imageDescription;
+        this._cardImage.setAttribute('src', this._imagePath);
+        this._cardImage.setAttribute('alt', this._imageDescription);
+        this._cardDescription.textContent = this._imageDescription;
         return this._element;
     }
 }
