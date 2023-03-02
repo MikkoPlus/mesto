@@ -32,7 +32,7 @@ export default class Card {
     }
 
     _deleteCard() {
-        this._element.parentElement.removeChild(this._element);
+        this._element.remove();
     }
 
     _changeHeartColor() {

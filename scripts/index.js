@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
           inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
           cardTemplateSelector = '#place-card-template',
           placeCardContainer = document.querySelector('.places__list'),
-          formList = Array.from(document.forms),
+          formValidators = {},
           validateConfig = {
             formSelector: '.form',
             inputSelector: '.form__input',
@@ -142,9 +142,15 @@ window.addEventListener('DOMContentLoaded', () => {
         return cardElement;
     };
 
-    const addValidationToForm = (formElement) => {
-        const formValidate = new FormValidator(validateConfig, formElement);
-        formValidate.enableValidation();
+    const enableValidation = (config) => {
+        const formList = Array.from(document.querySelectorAll(config.formSelector));
+        formList.forEach(formElement => {
+            const validator = new FormValidator(config, formElement);
+            const formName = formElement.getAttribute('name');
+
+            formValidators[formName] = validator;
+            validator.enableValidation();
+        });
     };
 
     initialCards.forEach((item) => {
@@ -153,7 +159,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     popups.forEach((popup) => {
         popup.addEventListener('mousedown', (evt) => {
-            if (evt.target.classList.contains('popup_opened')) {
+            if (evt.target.classList.contains('popup_active')) {
                 closePopup(popup);
             }
             if (evt.target.classList.contains('popup__close')) {
@@ -166,13 +172,13 @@ window.addEventListener('DOMContentLoaded', () => {
         pasteValueToEditFormInputs();
         openPopup(editProfilePopup); 
     });
-    addCardOpenPopupBtn.addEventListener('click', () =>  openPopup(addCardPopup));
+    addCardOpenPopupBtn.addEventListener('click', () =>  {
+        openPopup(addCardPopup);
+        formValidators['add-card'].resetValidation();
 
-    formList.forEach(form => addValidationToForm(form));
+    });
 
+    enableValidation(validateConfig);
     submitAddCardForm(formAddCard);
     submitEditProfileForm(formEditProfile);
 });
-
-// Спасибо за полезные коментарии по моей работе, можете мне подсказать одну вещь?
-// Не могу понять как можно обратиться к методу класса валидации при открытии попапа, чтобы вызвать метод отчистки ошибок
