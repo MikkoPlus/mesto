@@ -1,17 +1,27 @@
 'use strict';
-import FormValidator from "./FormValidator.js";
-import Card from './Card.js';
+import '../pages/index.css';
+import FormValidator from "./components/FormValidator.js";
+import Card from './components/Card.js';
+import Section from './components/Section.js';
+import Popup from './components/Popup.js';
+import PopupWithImage from './components/PopupWithImage.js';
+
+import atuhBeachImageLink from '../images/places/Atuh-beach.webp';
+import riceFieldsImageLink from '../images/places/Rice-fields.webp';
+import kutaBeachImageLink from '../images/places/Kuta-beach.webp';
+import nusaPenidaImageLink from '../images/places/Nusa-Penida.webp';
+import mountBaturImageLink from '../images/places/Mount-Batur.webp';
+import ubudImageLink from '../images/places/Ubud.webp';
+
 window.addEventListener('DOMContentLoaded', () => {
 
     const popupSection = document.querySelector('.popups'),
           popups = popupSection.querySelectorAll('.popup'),
-          editProfilePopup = popupSection.querySelector('#edit-profile-popup'),
+          editProfilePopupSelector = '#edit-profile-popup',
           addCardPopup = popupSection.querySelector('#add-card-popup'),
-          fullscreenImagePopup = popupSection.querySelector('#open-image-popup'),
-          fullscreenImage = fullscreenImagePopup.querySelector('.popup__fullscreen-image'),
-          fullscreenDescr = fullscreenImagePopup.querySelector('.popup__descr'),
-          inputName = editProfilePopup.querySelector('.form__input_type_name'),
-          inputJob = editProfilePopup.querySelector('.form__input_type_job'),
+          fullscreenImagePopupSelector = '#open-image-popup',
+        //   inputName = editProfilePopup.querySelector('.form__input_type_name'),
+        //   inputJob = editProfilePopup.querySelector('.form__input_type_job'),
           profileName = document.querySelector('.profile__name'),
           profileJob = document.querySelector('.profile__job'),
           formEditProfile = document.forms['edit-profile'],
@@ -21,7 +31,7 @@ window.addEventListener('DOMContentLoaded', () => {
           inputCardName = addCardPopup.querySelector('.form__input_type_place-name'),
           inputCardUrl = addCardPopup.querySelector('.form__input_type_url'),
           cardTemplateSelector = '#place-card-template',
-          placeCardContainer = document.querySelector('.places__list'),
+          placeCardSelector = '.places__list',
           formValidators = {},
           validateConfig = {
             formSelector: '.form',
@@ -33,27 +43,27 @@ window.addEventListener('DOMContentLoaded', () => {
           initialCards = [
             {
                 imageDescription: 'Atuh Beach',
-                imagePath: './images/places/Atuh-beach.webp'
+                imagePath: atuhBeachImageLink
             },
             {
                 imageDescription: 'Rice fields',
-                imagePath: './images/places/Rice-fields.webp'
+                imagePath: riceFieldsImageLink
             },
             {
                 imageDescription: 'Kuta beach',
-                imagePath: './images/places/Kuta-beach.webp'
+                imagePath: kutaBeachImageLink
             },
             {
                 imageDescription: 'Nusa-Penida island',
-                imagePath: './images/places/Nusa-Penida.webp'
+                imagePath: nusaPenidaImageLink
             },
             {
                 imageDescription: 'Mount Batur',
-                imagePath: './images/places/Mount-Batur.webp'
+                imagePath: mountBaturImageLink
             },
             {
                 imageDescription: 'Ubud',
-                imagePath: './images/places/Ubud.webp'
+                imagePath: ubudImageLink
             }
           ]; 
 
@@ -81,7 +91,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const submitAddCardForm = (form) => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            createUserCard(inputCardUrl.value, inputCardName.value);
+            // createUserCard(inputCardUrl.value, inputCardName.value);
             form.reset();
             closePopup(addCardPopup);
         });
@@ -95,17 +105,17 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const pasteValueToEditFormInputs = () =>{
-        inputName.value = profileName.textContent;
-        inputJob.value = profileJob.textContent;
-    };
+    // const pasteValueToEditFormInputs = () =>{
+    //     inputName.value = profileName.textContent;
+    //     inputJob.value = profileJob.textContent;
+    // };
         
-    const editProfileData = () => {
-        if (inputName.value !== '' && inputJob.value !== '') {
-            profileJob.textContent = inputJob.value;
-            profileName.textContent = inputName.value;
-        }
-    };
+    // const editProfileData = () => {
+    //     if (inputName.value !== '' && inputJob.value !== '') {
+    //         profileJob.textContent = inputJob.value;
+    //         profileName.textContent = inputName.value;
+    //     }
+    // };
 
     // add user cards functions
 
@@ -113,7 +123,7 @@ window.addEventListener('DOMContentLoaded', () => {
         fullscreenImage.src = imagePath;
         fullscreenImage.alt = imageDescription;
         fullscreenDescr.textContent = imageDescription;
-        openPopup(fullscreenImagePopup);
+        openPopup(fullscreenImagePopupSelector);
     };
 
     const createUserDataObject = (url, descr) => {
@@ -121,25 +131,6 @@ window.addEventListener('DOMContentLoaded', () => {
             imageDescription: descr,
             imagePath: url
         };
-    };
-
-    const createUserCard = (url, descr) => {
-        const userData = createUserDataObject(url, descr);
-  
-        renderCard(createCard(userData), placeCardContainer);
-    };
-
-    // render initial cards
-
-    const renderCard = (cardElement, parentElement) => {
-        parentElement.prepend(cardElement);
-    };
-
-    const createCard = (obj) => {
-        const card = new Card(obj, cardTemplateSelector, openFullScreenImg);
-        const cardElement = card.generateCard();
-
-        return cardElement;
     };
 
     const enableValidation = (config) => {
@@ -153,24 +144,24 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    initialCards.forEach((item) => {
-         renderCard(createCard(item), placeCardContainer);
-    });
+    // popups.forEach((popup) => {
+    //     popup.addEventListener('mousedown', (evt) => {
+    //         if (evt.target.classList.contains('popup_active')) {
+    //             closePopup(popup);
+    //         }
+    //         if (evt.target.classList.contains('popup__close')) {
+    //           closePopup(popup);
+    //         }
+    //     });
+    // });
 
-    popups.forEach((popup) => {
-        popup.addEventListener('mousedown', (evt) => {
-            if (evt.target.classList.contains('popup_active')) {
-                closePopup(popup);
-            }
-            if (evt.target.classList.contains('popup__close')) {
-              closePopup(popup);
-            }
-        });
-    });
+    const editPopup = new Popup(editProfilePopupSelector);
+    const popupWithImage = new PopupWithImage(fullscreenImagePopupSelector);
 
     editProfileOpenPopupBtn.addEventListener('click', () => {
-        pasteValueToEditFormInputs();
-        openPopup(editProfilePopup); 
+        // pasteValueToEditFormInputs();
+        editPopup.open();
+        // openPopup(editProfilePopup); 
     });
     addCardOpenPopupBtn.addEventListener('click', () =>  {
         openPopup(addCardPopup);
@@ -181,4 +172,16 @@ window.addEventListener('DOMContentLoaded', () => {
     enableValidation(validateConfig);
     submitAddCardForm(formAddCard);
     submitEditProfileForm(formEditProfile);
+
+
+    // Создание карточек классом Section
+
+    const initialCardList = new Section({items: initialCards, renderer: (item) => {
+        const card = new Card(item, cardTemplateSelector, popupWithImage.handleCardClick),
+              cardElement = card.generateCard();
+        initialCardList.addItem(cardElement);
+    }}, placeCardSelector);
+
+    initialCardList.renderItems();
+    
 });

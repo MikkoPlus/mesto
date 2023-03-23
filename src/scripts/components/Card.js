@@ -1,12 +1,12 @@
 export default class Card {
-    constructor(data, templateSelector, openFullScreenImgFunction) {
+    constructor(data, templateSelector, handleCardClick) {
         this._imagePath = data.imagePath;
         this._imageDescription = data.imageDescription;
         this._trashBagSelector = '.place-card__trash-bag';
         this._heartElementSelector = '.place-card__heart';
         this._imageSelector = '.place-card__image';
         this._cardDescriptionSelector = '.place-card__descr';
-        this._openFullScreenImage = openFullScreenImgFunction;
+        this._handleCardClick = handleCardClick;
         this._templateSelector = templateSelector;
     }
 
@@ -27,7 +27,7 @@ export default class Card {
         this._heartElement.addEventListener('click', () => this._changeHeartColor());
         this._trashBagIcon.addEventListener('click', () => this._deleteCard());
         this._cardImage.addEventListener('click', () => {
-            this._openFullScreenImage(this._imagePath, this._imageDescription);
+            this._handleCardClick(this._imagePath, this._imageDescription);
         });
     }
 

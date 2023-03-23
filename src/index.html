@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./pages/index.css">
     <title>Mesto</title>
 </head>
 <body class ="page">
     <header class="header">
         <a href="#" class="header__link">
-            <img src="./images/icons/logo.svg" alt="Mesto Russia" class="logo">
+            <img src="<%=require('./images/icons/logo.svg')%>" alt="Mesto Russia" class="logo">
         </a>
     </header>
     <main class="content">
         <section class="profile">
-            <img src="./images/profile/avatar.webp" alt="Avatar" class="profile__avatar">
+            <img src="<%=require('./images/profile/avatar.webp')%>" alt="Avatar" class="profile__avatar">
 
             <div class="profile__information">
                 <h1 class="profile__name">Jacques-Yves Cousteau</h1>
@@ -32,7 +31,7 @@
         <section class="popups">
             <div class="popup" id="edit-profile-popup">
                 <div class="popup__window popup__window_type_form">
-                    <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
+                    <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
                     <h4 class="popup__title">Редактировать профиль</h4>
                     <form class="form" id="edit-profile-form" name="edit-profile" novalidate>
                         <input required
@@ -57,7 +56,7 @@
             </div>
             <div class="popup" id="add-card-popup">
                 <div class="popup__window popup__window_type_form">
-                    <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
+                    <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
                     <h4 class="popup__title">Новое место</h4>
 
                     <form class="form" id="add-card-form" name="add-card" novalidate>
@@ -83,7 +82,7 @@
             </div>
             <div class="popup popup_fullscreen-img" id="open-image-popup">
                 <div class="popup__window popup__window_type_fullscreen-img">
-                    <img src="./images/icons/close-icon.svg" alt="Close" class="popup__close">
+                    <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
                     <img src="#" alt="#" class="popup__fullscreen-image">
                     <h3 class="popup__descr"></h3>
                 </div>
@@ -96,7 +95,7 @@
 
     <template id="place-card-template">
         <li class="place-card">
-            <img src="./images/icons/trash.svg" alt="trash-bag" class="place-card__trash-bag">
+            <img src="<%=require('./images/icons/trash.svg')%>" alt="trash-bag" class="place-card__trash-bag">
             <img src="#" alt="#" class="place-card__image">
             <div class="place-card__footer">
                 <h3 class="place-card__descr"></h3>
@@ -106,6 +105,5 @@
             </div>
         </li>
     </template> 
-    <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
