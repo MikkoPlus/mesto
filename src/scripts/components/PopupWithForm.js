@@ -17,7 +17,7 @@ export default class PopupWithForm extends Popup {
         
         return this._inputValues;
     }
-
+    // Не пойму как сделать можно по другому, более красиво
     setInputValues(newInputValuesObj) {
         const valuesArr = Object.values(newInputValuesObj);
         let i = 0;

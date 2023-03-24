@@ -1,10 +1,10 @@
 'use strict';
 import '../pages/index.css';
 import FormValidator from "./components/FormValidator.js";
-import Card from './components/Card.js';
 import Section from './components/Section.js';
 import PopupWithForm from './components/PopupWithForm.js';
 import PopupWithImage from './components/PopupWithImage.js';
+import Card from './components/Card.js';
 
 import UserInfo from './components/UserInfo';
 import {
@@ -18,30 +18,35 @@ import {
         initialCards,
         formValidators,
         validateConfig,
-        profileDataSelectors
+        profileDataSelectors,
     } from './utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
+
+    function generateCard (data, cardTemplateSelector, cardClickFunction) {
+        const card = new Card(data, cardTemplateSelector, cardClickFunction),
+              cardElement = card.generateCard();
+    
+        return cardElement;
+    }
 
     const userInfo = new UserInfo(profileDataSelectors);
 
     // Создание экземпляров попапа с формами
     
     const editPopup = new PopupWithForm(editProfilePopupSelector, (inputValues) => {
-        const keys = Object.values(inputValues);
-        userInfo.setUserInfo(keys[0], keys[1]);
+        userInfo.setUserInfo(inputValues['profile-name'], inputValues['profile-job']);
     });
 
     const addCardPopup = new PopupWithForm(addCardPopupSelector, (inputValues) => {
 
-        const keys = Object.values(inputValues);
         const userDataObj = {
-            imageDescription: keys[0],
-            imagePath: keys[1]
+            imageDescription: inputValues['card-name'],
+            imagePath: inputValues['card-job']
         };
 
-        const card = new Card(userDataObj, cardTemplateSelector, popupWithImage.handleCardClick),
-              cardElement = card.generateCard();
+        const cardElement = generateCard(userDataObj, cardTemplateSelector, popupWithImage.handleCardClick);
+
         initialCardList.addItem(cardElement);
     });
 
@@ -49,28 +54,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
     editProfileOpenPopupBtn.addEventListener('click', () => {
         editPopup.setInputValues(userInfo.getUserInfo());
+        formValidators['edit-profile'].resetValidation();
         editPopup.open();
     });
 
     addCardOpenPopupBtn.addEventListener('click', () =>  {
         addCardPopup.open();
         formValidators['add-card'].resetValidation();
-
     });
-
-
 
     const popupWithImage = new PopupWithImage(fullscreenImagePopupSelector);
 
     // Создание карточек классом Section
 
-    const initialCardList = new Section({items: initialCards, renderer: (item) => {
-        const card = new Card(item, cardTemplateSelector, popupWithImage.handleCardClick),
-              cardElement = card.generateCard();
+    const initialCardList = new Section({renderer: (item) => {
+        const cardElement = generateCard(item, cardTemplateSelector, popupWithImage.handleCardClick);
+
         initialCardList.addItem(cardElement);
     }}, placeCardSelector);
 
-    initialCardList.renderItems();
+    initialCardList.renderItems(initialCards);
 
     // Валидация форм
 
