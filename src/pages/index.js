@@ -1,12 +1,12 @@
 'use strict';
-import '../pages/index.css';
-import FormValidator from "./components/FormValidator.js";
-import Section from './components/Section.js';
-import PopupWithForm from './components/PopupWithForm.js';
-import PopupWithImage from './components/PopupWithImage.js';
-import Card from './components/Card.js';
+import './index.css';
+import FormValidator from "../components/FormValidator.js";
+import Section from '../components/Section.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import Card from '../components/Card.js';
 
-import UserInfo from './components/UserInfo';
+import UserInfo from '../components/UserInfo';
 import {
         editProfilePopupSelector,
         editProfileOpenPopupBtn,
@@ -19,7 +19,7 @@ import {
         formValidators,
         validateConfig,
         profileDataSelectors,
-    } from './utils/utils.js';
+    } from '../utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const userDataObj = {
             imageDescription: inputValues['card-name'],
-            imagePath: inputValues['card-job']
+            imagePath: inputValues['card-url']
         };
 
         const cardElement = generateCard(userDataObj, cardTemplateSelector, popupWithImage.handleCardClick);
@@ -54,6 +54,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     editProfileOpenPopupBtn.addEventListener('click', () => {
         editPopup.setInputValues(userInfo.getUserInfo());
+        console.log(userInfo.getUserInfo());
         formValidators['edit-profile'].resetValidation();
         editPopup.open();
     });

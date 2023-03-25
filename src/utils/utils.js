@@ -1,9 +1,9 @@
-import atuhBeachImageLink from '../../images/places/Atuh-beach.webp';
-import riceFieldsImageLink from '../../images/places/Rice-fields.webp';
-import kutaBeachImageLink from '../../images/places/Kuta-beach.webp';
-import nusaPenidaImageLink from '../../images/places/Nusa-Penida.webp';
-import mountBaturImageLink from '../../images/places/Mount-Batur.webp';
-import ubudImageLink from '../../images/places/Ubud.webp';
+import atuhBeachImageLink from '../images/places/Atuh-beach.webp';
+import riceFieldsImageLink from '../images/places/Rice-fields.webp';
+import kutaBeachImageLink from '../images/places/Kuta-beach.webp';
+import nusaPenidaImageLink from '../images/places/Nusa-Penida.webp';
+import mountBaturImageLink from '../images/places/Mount-Batur.webp';
+import ubudImageLink from '../images/places/Ubud.webp';
 
 export const editProfilePopupSelector = '#edit-profile-popup',
              addCardPopupSelector = '#add-card-popup',

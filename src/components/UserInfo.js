@@ -6,8 +6,8 @@ export default class UserInfo {
 
     getUserInfo() {
         const dataObj = {
-            profileName: this._userNameElement.textContent,
-            profileJob: this._userJobElement.textContent
+            'profile-name': this._userNameElement.textContent,
+            'profile-job': this._userJobElement.textContent
         };
 
         return dataObj;
