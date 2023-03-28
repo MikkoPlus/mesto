@@ -6,7 +6,7 @@
     opacity: 1;
     border: none;
     transform: translateY(3px);
-    transition: opacity .1s ease 0s;
+    transition: opacity .3s ease 0s;
     margin: 0px 0px 0px 19px;
 }
 

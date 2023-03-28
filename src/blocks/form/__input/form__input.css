@@ -8,12 +8,12 @@
     font-weight: 400;
     font-size: 14px;
     color: #000000;
-    margin-top: 13px;
+    margin-top: 39px;
     width: 100%;
 }
 
 .form__input:last-of-type {
-    margin-top: 7px;
+    margin-top: 20px;
 }
 
 .form__input:focus {

@@ -14,7 +14,9 @@
     </header>
     <main class="content">
         <section class="profile">
-            <img src="<%=require('./images/profile/avatar.webp')%>" alt="Avatar" class="profile__avatar">
+            <div class="profile__avatar-wrapper">
+                <img src="<%=require('./images/profile/avatar.webp')%>" alt="Avatar" class="profile__avatar">
+            </div>
 
             <div class="profile__information">
                 <h1 class="profile__name">Jacques-Yves Cousteau</h1>
@@ -56,6 +58,7 @@
                     </form>
                 </div>
             </div>
+
             <div class="popup" id="add-card-popup">
                 <div class="popup__window popup__window_type_form">
                     <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
@@ -84,6 +87,36 @@
                     </form>
                 </div>
             </div>
+
+            <div class="popup" id="refresh-avatar-popup">
+                <div class="popup__window popup__window_type_form popup__window_type_one-input">
+                    <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
+                    <h4 class="popup__title">Обновить аватар</h4>
+
+                    <form class="form" id="refresh-avatar-form" name="refresh-avatar" novalidate>
+                        <input required
+                               id="input-url"
+                               type="url" 
+                               placeholder="Ссылка на аватар" 
+                               name="avatar-url"
+                               class="form__input form__input_type_url">
+                        <span id="input-url-error" class="form__input-text-error"></span>
+
+                        <button type="submit" class="form__btn">Обновить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="popup" id="delete-card-popup">
+                <div class="popup__window popup__window_type_form popup__window_type_only-btn">
+                    <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
+                    <h4 class="popup__title">Вы уверены?</h4>
+                    <form class="form" id="delete-card-form" name="delete-card" novalidate>
+                        <button type="submit" class="form__btn">да</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="popup popup_fullscreen-img" id="open-image-popup">
                 <div class="popup__window popup__window_type_fullscreen-img">
                     <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
@@ -103,9 +136,12 @@
             <img src="#" alt="#" class="place-card__image">
             <div class="place-card__footer">
                 <h3 class="place-card__descr"></h3>
-                <button class="place-card__like-btn">
-                    <div class="place-card__heart"></div>
-                </button>
+                <div class="place-card__like">
+                    <button class="place-card__like-btn">
+                        <div class="place-card__heart"></div>
+                    </button>
+                    <div class="place-card__counter"></div>
+                </div>
             </div>
         </li>
     </template> 
