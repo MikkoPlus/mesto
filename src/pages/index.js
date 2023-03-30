@@ -32,29 +32,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const userInfo = new UserInfo(profileDataSelectors);
 
-    // Создание экземпляров попапа с формами
-    
-    const editPopup = new PopupWithForm(editProfilePopupSelector, (inputValues) => {
-        userInfo.setUserInfo(inputValues['profile-name'], inputValues['profile-job']);
-    });
-
-    const addCardPopup = new PopupWithForm(addCardPopupSelector, (inputValues) => {
-
-        const userDataObj = {
-            imageDescription: inputValues['card-name'],
-            imagePath: inputValues['card-url']
-        };
-
-        const cardElement = generateCard(userDataObj, cardTemplateSelector, popupWithImage.handleCardClick);
-
-        initialCardList.addItem(cardElement);
-    });
-
     // Открытие попапов с формами
 
     editProfileOpenPopupBtn.addEventListener('click', () => {
         editPopup.setInputValues(userInfo.getUserInfo());
-        console.log(userInfo.getUserInfo());
         formValidators['edit-profile'].resetValidation();
         editPopup.open();
     });
@@ -69,12 +50,12 @@ window.addEventListener('DOMContentLoaded', () => {
     // Создание карточек классом Section
 
     const initialCardList = new Section({renderer: (item) => {
-        const cardElement = generateCard(item, cardTemplateSelector, popupWithImage.handleCardClick);
+        const {name, link, likes} = item;
+        const cardElement = generateCard({name, link, likes}, cardTemplateSelector, popupWithImage.handleCardClick);
 
         initialCardList.addItem(cardElement);
     }}, placeCardSelector);
 
-    initialCardList.renderItems(initialCards);
 
     // Валидация форм
 
@@ -89,5 +70,88 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     enableValidation(validateConfig);
+
+    //Загрузка информации о пользователе с сервера 
+
+    fetch('https://nomoreparties.co/v1/cohort-62/users/me', {
+        headers: {
+            authorization: '21d67130-4b88-41b2-a64a-c76e797b432e'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const {name, about, avatar, _id} = data;
+        userInfo.setUserInfo(name, about);
+        userInfo.setAvatar(avatar);
+        userInfo.getUserId(_id);
+    });
+
+    // Загрузка карточек с сервера 
+
+    fetch('https://nomoreparties.co/v1/cohort-62/cards', {
+        headers: {
+            authorization: '21d67130-4b88-41b2-a64a-c76e797b432e'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        initialCardList.renderItems(data);
+    });
+
+
+    // Создание экземпляров класса попапа с формой
+
+    // Редактирование и отправка данных профиля на сервер
+    const editPopup = new PopupWithForm(editProfilePopupSelector, (inputValues) => {
+
+        fetch('https://mesto.nomoreparties.co/v1/cohort-62/users/me', {
+            method: 'PATCH',
+            headers: {
+                authorization: '21d67130-4b88-41b2-a64a-c76e797b432e',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: inputValues['profile-name'],
+                about: inputValues['profile-job']
     
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const {name, about} = data;
+            userInfo.setUserInfo(name, about);
+        });
+    });
+
+    // Создание новой карточки и отправка данных на сервер
+    const addCardPopup = new PopupWithForm(addCardPopupSelector, (inputValues) => {
+
+
+        fetch('https://mesto.nomoreparties.co/v1/cohort-62/cards', {
+            method: 'POST',
+            headers: {
+                authorization: '21d67130-4b88-41b2-a64a-c76e797b432e',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: inputValues['card-name'],
+                link: inputValues['card-url']
+    
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const cardElement = generateCard(data, cardTemplateSelector, popupWithImage.handleCardClick);
+            initialCardList.addItem(cardElement);
+        });
+
+        // const userDataObj = {
+        //     imageDescription: inputValues['card-name'],
+        //     imagePath: inputValues['card-url']
+        // };
+
+        // const cardElement = generateCard(userDataObj, cardTemplateSelector, popupWithImage.handleCardClick);
+
+        // initialCardList.addItem(cardElement);
+    });
 });

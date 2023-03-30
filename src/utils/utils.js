@@ -15,7 +15,8 @@ export const editProfilePopupSelector = '#edit-profile-popup',
              formValidators = {},
              profileDataSelectors = {
                  profileNameSelector: '.profile__name',
-                 profileJobSelector: '.profile__job'
+                 profileJobSelector: '.profile__job',
+                 profileAvatarSelector: '.profile__avatar'
              },
              validateConfig = {
                  formSelector: '.form',
