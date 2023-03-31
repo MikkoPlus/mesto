@@ -24,7 +24,7 @@ export default class Popup {
         }
     }
 
-    _removeEvenListeners() {
+    _removeEventListeners() {
         document.removeEventListener('keydown', this._closeByEsc);
         this._popupElement.removeEventListener('mousedown', this._closeByOverlayClick);
         this._popupElement.removeEventListener('click', this._closeByCloseIconClick);
@@ -32,15 +32,15 @@ export default class Popup {
 
     open() {
         this._popupElement.classList.add('popup_active');
-        this.setEvenListeners();
+        this.setEventListeners();
     }
 
     close() {
         this._popupElement.classList.remove('popup_active');
-        this._removeEvenListeners();
+        this._removeEventListeners();
     }
 
-    setEvenListeners() {    
+    setEventListeners() {    
         document.addEventListener('keydown', this._closeByEsc);
         this._popupElement.addEventListener('mousedown', this._closeByOverlayClick);
         this._popupElement.addEventListener('click', this._closeByCloseIconClick);

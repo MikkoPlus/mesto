@@ -8,6 +8,7 @@ import ubudImageLink from '../images/places/Ubud.webp';
 export const editProfilePopupSelector = '#edit-profile-popup',
              addCardPopupSelector = '#add-card-popup',
              fullscreenImagePopupSelector = '#open-image-popup',
+             deleteCardPopupSelector = '#delete-card-popup',
              editProfileOpenPopupBtn = document.querySelector('.profile__edit-btn'),
              addCardOpenPopupBtn = document.querySelector('.profile__add-button'),
              cardTemplateSelector = '#place-card-template',

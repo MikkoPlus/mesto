@@ -4,7 +4,9 @@ import FormValidator from "../components/FormValidator.js";
 import Section from '../components/Section.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithDeletionСonfirm from '../components/PopupWithDeletionСonfirm.js';
 import Card from '../components/Card.js';
+import MyCard from '../components/MyCard';
 
 import UserInfo from '../components/UserInfo';
 import {
@@ -13,9 +15,9 @@ import {
         addCardPopupSelector,
         addCardOpenPopupBtn,
         fullscreenImagePopupSelector,
+        deleteCardPopupSelector,
         cardTemplateSelector,
         placeCardSelector,
-        initialCards,
         formValidators,
         validateConfig,
         profileDataSelectors,
@@ -23,14 +25,36 @@ import {
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    function generateCard (data, cardTemplateSelector, cardClickFunction) {
-        const card = new Card(data, cardTemplateSelector, cardClickFunction),
+    function generateCard (...args) {
+        const card = new Card(...args),
+              cardElement = card.generateCard();
+    
+        return cardElement;
+    }
+
+    function generateMyCard (...args) {
+        const card = new MyCard(...args),
               cardElement = card.generateCard();
     
         return cardElement;
     }
 
     const userInfo = new UserInfo(profileDataSelectors);
+
+    // Создание экземпляра класса подтверждения удаления
+    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(deleteCardPopupSelector, (currentCard, id) => {
+        fetch(`https://mesto.nomoreparties.co/v1/cohort-62/cards/${id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: '21d67130-4b88-41b2-a64a-c76e797b432e'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            currentCard.deleteCard();
+        });
+    });
 
     // Открытие попапов с формами
 
@@ -50,8 +74,19 @@ window.addEventListener('DOMContentLoaded', () => {
     // Создание карточек классом Section
 
     const initialCardList = new Section({renderer: (item) => {
-        const {name, link, likes} = item;
-        const cardElement = generateCard({name, link, likes}, cardTemplateSelector, popupWithImage.handleCardClick);
+        const {name, link, likes, _id} = item;
+        
+         const cardElement = userInfo.getUserId() === item.owner._id  
+        ? generateMyCard(
+            {name, link, likes, _id},
+            cardTemplateSelector,
+            popupWithImage.handleCardClick,
+            popupWithDeletionСonfirm.handleTrashBagClick)
+        : generateCard(
+            {name, link, likes},
+            cardTemplateSelector,
+            popupWithImage.handleCardClick);
+
 
         initialCardList.addItem(cardElement);
     }}, placeCardSelector);
@@ -83,8 +118,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const {name, about, avatar, _id} = data;
         userInfo.setUserInfo(name, about);
         userInfo.setAvatar(avatar);
-        userInfo.getUserId(_id);
+        userInfo.setUserId(_id);
     });
+    
 
     // Загрузка карточек с сервера 
 
@@ -141,17 +177,13 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
-            const cardElement = generateCard(data, cardTemplateSelector, popupWithImage.handleCardClick);
+            const cardElement = generateCard(
+                data,
+                cardTemplateSelector, 
+                popupWithImage.handleCardClick, 
+                popupWithDeletionСonfirm.handleTrashBagClick
+            );
             initialCardList.addItem(cardElement);
         });
-
-        // const userDataObj = {
-        //     imageDescription: inputValues['card-name'],
-        //     imagePath: inputValues['card-url']
-        // };
-
-        // const cardElement = generateCard(userDataObj, cardTemplateSelector, popupWithImage.handleCardClick);
-
-        // initialCardList.addItem(cardElement);
     });
 });

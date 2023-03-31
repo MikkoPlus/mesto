@@ -54,7 +54,7 @@
                                 class="form__input form__input_type_job">
                         <span id="input-profile-job-error" class="form__input-text-error"></span>
 
-                        <button type="submit" class="form__btn">Сохранить</button>
+                        <button type="submit" class="popup__button form__btn">Сохранить</button>
                     </form>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                                class="form__input form__input_type_url">
                         <span id="input-url-error" class="form__input-text-error"></span>
 
-                        <button type="submit" class="form__btn">Создать</button>
+                        <button type="submit" class="popup__button form__btn">Создать</button>
                     </form>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                                class="form__input form__input_type_url">
                         <span id="input-url-error" class="form__input-text-error"></span>
 
-                        <button type="submit" class="form__btn">Обновить</button>
+                        <button type="submit" class="popup__button form__btn">Обновить</button>
                     </form>
                 </div>
             </div>
@@ -111,9 +111,7 @@
                 <div class="popup__window popup__window_type_form popup__window_type_only-btn">
                     <img src="<%=require('./images/icons/close-icon.svg')%>" alt="Close" class="popup__close">
                     <h4 class="popup__title">Вы уверены?</h4>
-                    <form class="form" id="delete-card-form" name="delete-card" novalidate>
-                        <button type="submit" class="form__btn">да</button>
-                    </form>
+                    <button type="submit" class="popup__button">да</button>
                 </div>
             </div>
 

@@ -3,11 +3,15 @@ export default class UserInfo {
         this._userNameElement = document.querySelector(profileNameSelector);
         this._userJobElement = document.querySelector(profileJobSelector);
         this._userAvatarElement = document.querySelector(profileAvatarSelector);
-        this._userId = '';
     }
 
-    getUserId(id) {
+    setUserId(id) {
         this._userId = id;
+        
+    }
+
+    getUserId() {
+        return this._userId;
     }
 
     getUserInfo() {

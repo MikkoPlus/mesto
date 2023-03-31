@@ -23,29 +23,38 @@ export default class Card {
     }
 
     _setEventListenersToCard() {
-        this._heartElement = this._element.querySelector(this._heartElementSelector);
-        this._trashBagIcon = this._element.querySelector(this._trashBagSelector);
-
         this._heartElement.addEventListener('click', () => this._changeHeartColor());
-        this._trashBagIcon.addEventListener('click', () => this._deleteCard());
         this._cardImage.addEventListener('click', () => {
             this._handleCardClick(this._imagePath, this._imageDescription);
         });
-    }
-
-    _deleteCard() {
-        this._element.remove();
     }
 
     _changeHeartColor() {
         this._heartElement.classList.toggle('place-card__heart_like');
     }
 
-    generateCard() {
-        this._element = this._getTemplate();
+    _searchCardComponents() {
         this._cardImage = this._element.querySelector(this._imageSelector);
         this._cardDescription = this._element.querySelector(this._cardDescriptionSelector);
         this._likesCounter = this._element.querySelector(this._likesCounterSelector);
+        this._heartElement = this._element.querySelector(this._heartElementSelector);
+        this._trashBagIcon = this._element.querySelector(this._trashBagSelector);
+    }
+
+    _toggleTrashBagVisability() {
+        this._hideTrashBagIcon();
+    }
+
+    _hideTrashBagIcon() {
+        this._trashBagIcon.classList.add('place-card__trash-bag_hidden');
+    }
+    
+
+    generateCard() {
+        this._element = this._getTemplate();
+
+        this._searchCardComponents();
+        this._toggleTrashBagVisability();
         this._setEventListenersToCard();
 
         this._cardImage.setAttribute('src', this._imagePath);
