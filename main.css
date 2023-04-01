@@ -22,7 +22,7 @@
 .place-card__footer{align-items:center;background-color:#fff;border-radius:0 0 10px 10px;display:flex;flex:0 0 10%;justify-content:space-between;padding:20px 20px 22px 21px}@media (max-width:779px){.place-card__footer{padding:20px 10px}}@media (max-width:420px){.place-card__footer{padding:25px 20px}}
 .place-card__descr{color:#000;font-size:24px;font-weight:900;line-height:29px;margin:0;overflow:hidden;padding:0;text-overflow:ellipsis;white-space:nowrap}@media (max-width:879px){.place-card__descr{font-size:20px}}@media (max-width:420px){.place-card__descr{font-size:24px}}
 .place-card__like{align-items:center;display:flex;flex-direction:column;justify-content:center}
-.place-card__counter{display:block;font-size:13px;line-height:16px;line-height:100%;margin-top:3px;text-align:Center}
+.place-card__counter{display:block;font-size:13px;line-height:16px;line-height:100%;margin-top:3px;text-align:center}
 .place-card__counter_hidden{display:none}
 .place-card__like-btn{background-color:#fff;border:none;height:19px;min-width:22px;padding:0}
 .place-card__heart{background:url(images/heart.1ad06e85f169668a1f36.svg) 50%/contain no-repeat;cursor:pointer;display:block;height:100%;transition:background .3s ease 0s;width:100%}@media (min-width:768px){.place-card__heart:hover{opacity:.5}}
