@@ -7,8 +7,9 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithDeletionСonfirm from '../components/PopupWithDeletionСonfirm.js';
 import Card from '../components/Card.js';
 import MyCard from '../components/MyCard';
-
+import Api from '../components/Api';
 import UserInfo from '../components/UserInfo';
+
 import {
         editProfilePopupSelector,
         editProfileOpenPopupBtn,
@@ -16,11 +17,15 @@ import {
         addCardOpenPopupBtn,
         fullscreenImagePopupSelector,
         deleteCardPopupSelector,
+        refreshAvatarPopupSelector,
         cardTemplateSelector,
         placeCardSelector,
         formValidators,
         validateConfig,
         profileDataSelectors,
+        avatarElement,
+        apiConfig,
+        loadingMessages
     } from '../utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -39,20 +44,42 @@ window.addEventListener('DOMContentLoaded', () => {
         return cardElement;
     }
 
+    function likeHandler(currentCard, heart, likeCounter, cardId) {
+
+        !heart.classList.contains('place-card__heart_like')
+        ? api.postLike(cardId)
+        .then(data => {
+            const {likes} = data;
+            likeCounter.textContent = likes.length;
+            currentCard.setLike();
+            currentCard.changeLikeCounterVisability();
+        })
+        .catch(error => console.log(error))
+        .finally(() => console.log('Лайк поставлен'))
+        : api.deleteLike(cardId)
+        .then(data => {
+            const {likes} = data;
+            likeCounter.textContent = likes.length;
+            currentCard.removeLike();
+            currentCard.changeLikeCounterVisability();
+        })
+        .catch(error => console.log(error))
+        .finally(() => console.log('Лайк убран'));
+    }
+
     const userInfo = new UserInfo(profileDataSelectors);
 
     // Создание экземпляра класса подтверждения удаления
-    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(deleteCardPopupSelector, (currentCard, id) => {
-        fetch(`https://mesto.nomoreparties.co/v1/cohort-62/cards/${id}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: '21d67130-4b88-41b2-a64a-c76e797b432e'
-            }
-        })
-        .then(response => response.json())
+    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(deleteCardPopupSelector, (currentCard, id, btn, btnText) => {
+        api.changeButtonText(btn, loadingMessages.delete);
+        api.cardDelition(id)
         .then(data => {
-            console.log(data);
             currentCard.deleteCard();
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+            api.changeButtonText(btn, btnText);
+            console.log('Удаление карточки прошло успешно');
         });
     });
 
@@ -69,6 +96,12 @@ window.addEventListener('DOMContentLoaded', () => {
         formValidators['add-card'].resetValidation();
     });
 
+    avatarElement.addEventListener('click', () => {
+        refreshAvatarPopup.open();
+        formValidators['refresh-avatar'].resetValidation();
+    });
+
+
     const popupWithImage = new PopupWithImage(fullscreenImagePopupSelector);
 
     // Создание карточек классом Section
@@ -81,16 +114,17 @@ window.addEventListener('DOMContentLoaded', () => {
             {name, link, likes, _id},
             cardTemplateSelector,
             popupWithImage.handleCardClick,
+            likeHandler,
             popupWithDeletionСonfirm.handleTrashBagClick)
         : generateCard(
-            {name, link, likes},
+            {name, link, likes, _id},
             cardTemplateSelector,
-            popupWithImage.handleCardClick);
+            popupWithImage.handleCardClick,
+            likeHandler);
 
 
         initialCardList.addItem(cardElement);
     }}, placeCardSelector);
-
 
     // Валидация форм
 
@@ -106,84 +140,88 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     enableValidation(validateConfig);
 
+    //Создание класса Api 
+
+    const api = new Api(apiConfig);
+
     //Загрузка информации о пользователе с сервера 
 
-    fetch('https://nomoreparties.co/v1/cohort-62/users/me', {
-        headers: {
-            authorization: '21d67130-4b88-41b2-a64a-c76e797b432e'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const {name, about, avatar, _id} = data;
-        userInfo.setUserInfo(name, about);
-        userInfo.setAvatar(avatar);
-        userInfo.setUserId(_id);
-    });
-    
+    api.getProfileData()
+        .then(data => {
+            const {name, about, avatar, _id} = data;
+            userInfo.setUserInfo(name, about);
+            userInfo.setAvatar(avatar);
+            userInfo.setUserId(_id);
+        })
+        .catch(error => console.log(error))
+        .finally(() => console.log('Загрузка данных с сервера прошла успешно'));
 
     // Загрузка карточек с сервера 
 
-    fetch('https://nomoreparties.co/v1/cohort-62/cards', {
-        headers: {
-            authorization: '21d67130-4b88-41b2-a64a-c76e797b432e'
-        }
-    })
-    .then(response => response.json())
+    api.getCards()
     .then(data => {
         initialCardList.renderItems(data);
-    });
+    })
+    .catch(error => console.log(error))
+    .finally(() => console.log('Загрузка данных с сервера прошла успешно'));
 
 
     // Создание экземпляров класса попапа с формой
 
     // Редактирование и отправка данных профиля на сервер
-    const editPopup = new PopupWithForm(editProfilePopupSelector, (inputValues) => {
-
-        fetch('https://mesto.nomoreparties.co/v1/cohort-62/users/me', {
-            method: 'PATCH',
-            headers: {
-                authorization: '21d67130-4b88-41b2-a64a-c76e797b432e',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: inputValues['profile-name'],
-                about: inputValues['profile-job']
-    
-            })
-        })
-        .then(response => response.json())
+    const editPopup = new PopupWithForm(editProfilePopupSelector, (inputValues, btn, btnText) => {
+        api.changeButtonText(btn, loadingMessages.save);
+        api.postProfileData(inputValues)
         .then(data => {
             const {name, about} = data;
             userInfo.setUserInfo(name, about);
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+            api.changeButtonText(btn, btnText);
+            console.log('Загрузка данных на сервера прошла успешно');
         });
     });
 
     // Создание новой карточки и отправка данных на сервер
-    const addCardPopup = new PopupWithForm(addCardPopupSelector, (inputValues) => {
+    const addCardPopup = new PopupWithForm(addCardPopupSelector, (inputValues, btn, btnText) => {
 
-
-        fetch('https://mesto.nomoreparties.co/v1/cohort-62/cards', {
-            method: 'POST',
-            headers: {
-                authorization: '21d67130-4b88-41b2-a64a-c76e797b432e',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: inputValues['card-name'],
-                link: inputValues['card-url']
-    
-            })
-        })
-        .then(response => response.json())
+        api.changeButtonText(btn, loadingMessages.save);
+        api.postNewCard(inputValues)
         .then(data => {
-            const cardElement = generateCard(
-                data,
-                cardTemplateSelector, 
-                popupWithImage.handleCardClick, 
-                popupWithDeletionСonfirm.handleTrashBagClick
-            );
+            const {name, link, likes, _id} = data;
+            const cardElement = generateMyCard(
+                {name, link, likes, _id},
+                cardTemplateSelector,
+                popupWithImage.handleCardClick,
+                likeHandler,
+                popupWithDeletionСonfirm.handleTrashBagClick);
+
             initialCardList.addItem(cardElement);
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+            api.changeButtonText(btn, btnText);
+            console.log('Загрузка данных на сервер прошла успешно');
         });
+    });
+
+
+    //Попап изменения аватара и отправка данных на сервер
+
+    const refreshAvatarPopup = new PopupWithForm(refreshAvatarPopupSelector, (inputValues, btn, btnText) => {
+
+
+        api.changeButtonText(btn, loadingMessages.refresh);
+        api.postAvatar(inputValues)
+        .then(data => {
+            userInfo.setAvatar(data.avatar);
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+            api.changeButtonText(btn, btnText);
+            console.log('Загрузка данных на сервера прошла успешно');
+        });
+        
     });
 });

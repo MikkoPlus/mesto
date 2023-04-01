@@ -5,6 +5,7 @@ export default class PopupWithDeletionСonfirm extends Popup {
         super(popupSelector);
         this._deleteCardFunction = deleteFunction;
         this._popupBtn = this._popupElement.querySelector('.popup__button');
+        this._popupBtnText = this._popupBtn.textContent;
         this.handleTrashBagClick = this.open.bind(this);
         this.handlerCardDelition = this._handlerCardDelition.bind(this);
     }
@@ -16,7 +17,7 @@ export default class PopupWithDeletionСonfirm extends Popup {
     }
 
     _handlerCardDelition() {
-        this._deleteCardFunction(this._currentCard, this._currentId);
+        this._deleteCardFunction(this._currentCard, this._currentId, this._popupBtn, this._popupBtnText);
         this.close();
    }
 

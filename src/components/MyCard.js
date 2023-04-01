@@ -1,9 +1,8 @@
 import Card from "./Card";
 
 export default class MyCard extends Card {
-    constructor({name, link, likes, _id}, templateSelector, handleCardClick, handleTrashBagClick) {
-        super({name, link, likes}, templateSelector, handleCardClick);
-        this._id = _id;
+    constructor({name, link, likes, _id}, templateSelector, handleCardClick, handleLikeClick,  handleTrashBagClick) {
+        super({name, link, likes, _id}, templateSelector, handleCardClick, handleLikeClick);
         this._handleTrashBagClick = handleTrashBagClick;
     }
 
@@ -25,10 +24,5 @@ export default class MyCard extends Card {
         this._trashBagIcon.addEventListener('click', () => {
             this._handleTrashBagClick(this, this._id);
         });
-    }
-
-    _searchCardComponents() {
-        super._searchCardComponents();
-        this._element.id = this._id;
     }
 }

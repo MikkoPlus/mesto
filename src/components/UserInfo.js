@@ -7,8 +7,8 @@ export default class UserInfo {
 
     setUserId(id) {
         this._userId = id;
-        
     }
+
 
     getUserId() {
         return this._userId;
@@ -19,7 +19,6 @@ export default class UserInfo {
             'profile-name': this._userNameElement.textContent,
             'profile-job': this._userJobElement.textContent
         };
-
         return dataObj;
     }
 

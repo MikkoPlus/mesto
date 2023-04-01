@@ -12,7 +12,7 @@
     width: 100%;
 }
 
-.form__input:last-of-type {
+.form__input:nth-child(3) {
     margin-top: 20px;
 }
 

@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 0 0 10px 10px;
-    max-height: 85px;
+    flex: 0 0 10%;
 }
 
 @media (max-width: 779px) {

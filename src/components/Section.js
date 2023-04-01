@@ -5,7 +5,7 @@ export default class Section {
     }
 
     _clear() {
-        // this._container.innerHTML = '';
+        this._container.innerHTML = '';
     }
 
     renderItems(renderedItems) {
@@ -16,6 +16,6 @@ export default class Section {
     }
 
     addItem(element) {
-        this._container.append(element);
+        this._container.prepend(element);
     }
 }
