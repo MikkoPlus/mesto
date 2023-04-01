@@ -65,7 +65,6 @@ export default class Card {
         this._trashBagIcon.classList.add('place-card__trash-bag_hidden');
     }
     
-
     generateCard() {
         this._element = this._getTemplate();
 

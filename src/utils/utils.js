@@ -1,3 +1,6 @@
+import Card from '../components/Card.js';
+import MyCard from '../components/MyCard';
+
 export const editProfilePopupSelector = '#edit-profile-popup',
              addCardPopupSelector = '#add-card-popup',
              fullscreenImagePopupSelector = '#open-image-popup',
@@ -29,4 +32,18 @@ export const editProfilePopupSelector = '#edit-profile-popup',
              apiConfig = {
                 baseUrlAdress: 'https://nomoreparties.co/v1/cohort-62/',
                 autorisationToken: '21d67130-4b88-41b2-a64a-c76e797b432e'
-             }
+             };
+
+export function generateCard (...args) {
+    const card = new Card(...args),
+            cardElement = card.generateCard();
+
+    return cardElement;
+}
+
+export function generateMyCard (...args) {
+    const card = new MyCard(...args),
+            cardElement = card.generateCard();
+
+    return cardElement;
+}

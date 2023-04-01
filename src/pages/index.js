@@ -5,8 +5,6 @@ import Section from '../components/Section.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithDeletionСonfirm from '../components/PopupWithDeletionСonfirm.js';
-import Card from '../components/Card.js';
-import MyCard from '../components/MyCard';
 import Api from '../components/Api';
 import UserInfo from '../components/UserInfo';
 
@@ -25,37 +23,25 @@ import {
         profileDataSelectors,
         avatarElement,
         apiConfig,
-        loadingMessages
+        loadingMessages,
+        generateCard,
+        generateMyCard,
     } from '../utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    function generateCard (...args) {
-        const card = new Card(...args),
-              cardElement = card.generateCard();
-    
-        return cardElement;
-    }
-
-    function generateMyCard (...args) {
-        const card = new MyCard(...args),
-              cardElement = card.generateCard();
-    
-        return cardElement;
-    }
-
     function likeHandler(currentCard, heart, likeCounter, cardId) {
 
         !heart.classList.contains('place-card__heart_like')
-        ? api.postLike(cardId)
-        .then(data => {
-            const {likes} = data;
-            likeCounter.textContent = likes.length;
-            currentCard.setLike();
-            currentCard.changeLikeCounterVisability();
-        })
-        .catch(error => console.log(error))
-        .finally(() => console.log('Лайк поставлен'))
+            ? api.postLike(cardId)
+            .then(data => {
+                const {likes} = data;
+                likeCounter.textContent = likes.length;
+                currentCard.setLike();
+                currentCard.changeLikeCounterVisability();
+             })
+            .catch(error => console.log(error))
+            .finally(() => console.log('Лайк поставлен'))
         : api.deleteLike(cardId)
         .then(data => {
             const {likes} = data;
@@ -67,21 +53,27 @@ window.addEventListener('DOMContentLoaded', () => {
         .finally(() => console.log('Лайк убран'));
     }
 
+    // Создание класса UserInfo
+
     const userInfo = new UserInfo(profileDataSelectors);
 
-    // Создание экземпляра класса подтверждения удаления
-    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(deleteCardPopupSelector, (currentCard, id, btn, btnText) => {
-        api.changeButtonText(btn, loadingMessages.delete);
-        api.cardDelition(id)
-        .then(data => {
-            currentCard.deleteCard();
-        })
-        .catch(error => console.log(error))
-        .finally(() => {
-            api.changeButtonText(btn, btnText);
-            console.log('Удаление карточки прошло успешно');
+    //Создание класса Api 
+
+    const api = new Api(apiConfig);
+
+    // Валидация форм
+
+    const enableValidation = (config) => {
+        const formList = Array.from(document.querySelectorAll(config.formSelector));
+        formList.forEach(formElement => {
+            const validator = new FormValidator(config, formElement);
+            const formName = formElement.getAttribute('name');
+
+            formValidators[formName] = validator;
+            validator.enableValidation();
         });
-    });
+    };
+    enableValidation(validateConfig);
 
     // Открытие попапов с формами
 
@@ -101,8 +93,6 @@ window.addEventListener('DOMContentLoaded', () => {
         formValidators['refresh-avatar'].resetValidation();
     });
 
-
-    const popupWithImage = new PopupWithImage(fullscreenImagePopupSelector);
 
     // Создание карточек классом Section
 
@@ -126,23 +116,9 @@ window.addEventListener('DOMContentLoaded', () => {
         initialCardList.addItem(cardElement);
     }}, placeCardSelector);
 
-    // Валидация форм
+    // Создание класса попапа с изображением
 
-    const enableValidation = (config) => {
-        const formList = Array.from(document.querySelectorAll(config.formSelector));
-        formList.forEach(formElement => {
-            const validator = new FormValidator(config, formElement);
-            const formName = formElement.getAttribute('name');
-
-            formValidators[formName] = validator;
-            validator.enableValidation();
-        });
-    };
-    enableValidation(validateConfig);
-
-    //Создание класса Api 
-
-    const api = new Api(apiConfig);
+    const popupWithImage = new PopupWithImage(fullscreenImagePopupSelector);
 
     //Загрузка информации о пользователе с сервера 
 
@@ -166,7 +142,7 @@ window.addEventListener('DOMContentLoaded', () => {
     .finally(() => console.log('Загрузка данных с сервера прошла успешно'));
 
 
-    // Создание экземпляров класса попапа с формой
+    // Создание экземпляров классов попапа с формой
 
     // Редактирование и отправка данных профиля на сервер
     const editPopup = new PopupWithForm(editProfilePopupSelector, (inputValues, btn, btnText) => {
@@ -179,7 +155,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.log(error))
         .finally(() => {
             api.changeButtonText(btn, btnText);
-            console.log('Загрузка данных на сервера прошла успешно');
+            console.log('Загрузка данных на сервер прошла успешно');
         });
     });
 
@@ -206,9 +182,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-
-    //Попап изменения аватара и отправка данных на сервер
-
+    // Создание класса обновления аватара
     const refreshAvatarPopup = new PopupWithForm(refreshAvatarPopupSelector, (inputValues, btn, btnText) => {
 
 
@@ -220,8 +194,22 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.log(error))
         .finally(() => {
             api.changeButtonText(btn, btnText);
-            console.log('Загрузка данных на сервера прошла успешно');
+            console.log('Загрузка данных на сервер прошла успешно');
         });
-        
+    });
+
+    // Создание экземпляра класса подтверждения удаления
+    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(deleteCardPopupSelector, (currentCard, id, btn, btnText) => {
+        api.changeButtonText(btn, loadingMessages.delete);
+        api.cardDelition(id)
+        .then(data => {
+            console.log(data);
+            currentCard.deleteCard();
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+            api.changeButtonText(btn, btnText);
+            console.log('Удаление карточки прошло успешно');
+        });
     });
 });
