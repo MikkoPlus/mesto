@@ -1,13 +1,11 @@
 import Popup from "./Popup";
 
 export default class PopupWithDeletionСonfirm extends Popup {
-    constructor(popupSelector, deleteFunction){
+    constructor(popupSelector){
         super(popupSelector);
-        this._deleteCardFunction = deleteFunction;
-        this._popupBtn = this._popupElement.querySelector('.popup__button');
-        this._popupBtnText = this._popupBtn.textContent;
+        this._popupButton = this._popupElement.querySelector('.popup__button');
+        this._popupButtonText = this._popupButton.textContent;
         this.handleTrashBagClick = this.open.bind(this);
-        this.handlerCardDelition = this._handlerCardDelition.bind(this);
     }
 
     open(currentCard, id) {
@@ -15,19 +13,32 @@ export default class PopupWithDeletionСonfirm extends Popup {
         this._currentId = id;
         this._currentCard = currentCard;
     }
-
-    _handlerCardDelition() {
-        this._deleteCardFunction(this._currentCard, this._currentId, this._popupBtn, this._popupBtnText);
-        this.close();
-   }
-
-    setEventListeners() {
-        super.setEventListeners();
-        this._popupBtn.addEventListener('click', this.handlerCardDelition);
+    
+    //  Публичная функция возвращает обьект с сылкой на экземпляр класса карточки и её id
+    getCardData() {
+        return {
+            card: this._currentCard,
+            cardId: this._currentId
+        };
     }
 
-    _removeEventListeners() {
-        super._removeEventListeners();
-        this._popupBtn.removeEventListener('click', this.handlerCardDelition);
+    setDefaultButtonText() {
+        this._popupButton.textContent = this._popupButtonText;
+    }
+
+    setCustomButtonText(text) {
+        this._popupButton.textContent = text;
+    }
+
+    setCallback(submitCb) {
+        this._handleSubmit = submitCb;
+    }
+
+    _setEventListeners() {
+        super._setEventListeners();
+        this._popupButton.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            this._handleSubmit();
+        });
     }
 }

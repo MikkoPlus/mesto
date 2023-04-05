@@ -7,11 +7,11 @@ export default class Api {
         this._cardsUrl = `${this._baseUrl}cards`;
     }
 
-    _fetchServerResponse(response) {
+    _checkResponse(response) {
         if (response.ok) {
             return response.json();
-            }
-            return Promise.reject(`Ошибка: ${response.status}`);
+        }
+        return Promise.reject(`Ошибка: ${response.status}`);
     }
 
     _fetchGetRequest(url) {
@@ -21,7 +21,7 @@ export default class Api {
                 authorization: this._autorisationToken,
             }
         })
-        .then(response => this._fetchServerResponse(response));
+        .then(response => this._checkResponse(response));
     }
 
     _fetchPostRequest(url, method, bodyData) {
@@ -31,9 +31,9 @@ export default class Api {
                 authorization: this._autorisationToken,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(bodyData)
+            body: bodyData
         })
-        .then(response => this._fetchServerResponse(response));
+        .then(response => this._checkResponse(response));
     }
 
     _fetchDeleteRequest(url, id) {
@@ -43,27 +43,7 @@ export default class Api {
                 authorization: this._autorisationToken,
             }
         })
-        .then(response => this._fetchServerResponse(response));
-    }
-
-    _fetchAddCardBody(inputValues) {
-        return {
-            name: inputValues['card-name'],
-            link: inputValues['card-url']
-        };
-    }
-
-    _fetchEditProfileBody(inputValues) {
-        return {
-            name: inputValues['profile-name'],
-            about: inputValues['profile-job']
-        };
-    }
-
-    _fetchPostAvatarBody(inputValues) {
-        return {
-            avatar: inputValues['avatar-url']
-        };
+        .then(response => this._checkResponse(response));
     }
 
     _fetchChangeLikesState(url, id, method) {
@@ -73,7 +53,7 @@ export default class Api {
                 authorization: this._autorisationToken
             }
         })
-        .then(response => this._fetchServerResponse(response));
+        .then(response => this._checkResponse(response));
     }
     
     getProfileData() {
@@ -84,32 +64,27 @@ export default class Api {
         return this._fetchGetRequest(this._cardsUrl);
     }
 
-    postNewCard(inputValues) {
-        return this._fetchPostRequest(this._cardsUrl, 'POST', this._fetchAddCardBody(inputValues));
+    postNewCard(bodyData) {
+        return this._fetchPostRequest(this._cardsUrl, 'POST', bodyData);
     }
 
-    postProfileData(inputValues) {
-        return this._fetchPostRequest(this._profileUrl, 'PATCH', this._fetchEditProfileBody(inputValues));
+    postProfileData(bodyData) {
+        return this._fetchPostRequest(this._profileUrl, 'PATCH', bodyData);
     }
 
-    postAvatar(inputValues) {
-        return this._fetchPostRequest(this._profileAvatarUrl, 'PATCH', this._fetchPostAvatarBody(inputValues));
+    postAvatar(bodyData) {
+        return this._fetchPostRequest(this._profileAvatarUrl, 'PATCH', bodyData);
     }
 
     postLike(cardId) {
         return this._fetchChangeLikesState(this._cardsUrl, cardId, 'PUT');
-
     }
 
     deleteLike(cardId) {
         return this._fetchChangeLikesState(this._cardsUrl, cardId, 'DELETE');
     }
 
-    cardDelition(cardId) {
+    deleteCard(cardId) {
         return this._fetchDeleteRequest(this._cardsUrl, cardId);
-    }
-
-    changeButtonText(button, text) {
-        button.textContent = text;
     }
 }

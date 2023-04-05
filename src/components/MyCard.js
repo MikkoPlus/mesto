@@ -1,13 +1,13 @@
 import Card from "./Card";
 
 export default class MyCard extends Card {
-    constructor({name, link, likes, _id}, templateSelector, handleCardClick, handleLikeClick,  handleTrashBagClick) {
-        super({name, link, likes, _id}, templateSelector, handleCardClick, handleLikeClick);
+    constructor({name, link, likes, _id}, isLiked, templateSelector, handleCardClick, handleLikeClick,  handleTrashBagClick) {
+        super({name, link, likes, _id}, isLiked, templateSelector, handleCardClick, handleLikeClick);
         this._handleTrashBagClick = handleTrashBagClick;
     }
 
-    _toggleTrashBagVisability() {
-        super._toggleTrashBagVisability();
+    _toggleTrashBagVisibility() {
+        super._toggleTrashBagVisibility();
         this._showTrashBagIcon();
     }
 

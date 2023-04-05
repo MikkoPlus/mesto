@@ -1,13 +1,13 @@
 import Card from '../components/Card.js';
 import MyCard from '../components/MyCard';
 
-export const editProfilePopupSelector = '#edit-profile-popup',
-             addCardPopupSelector = '#add-card-popup',
-             fullscreenImagePopupSelector = '#open-image-popup',
-             refreshAvatarPopupSelector = '#refresh-avatar-popup',
-             deleteCardPopupSelector = '#delete-card-popup',
-             editProfileOpenPopupBtn = document.querySelector('.profile__edit-btn'),
-             addCardOpenPopupBtn = document.querySelector('.profile__add-button'),
+export const popupWithEditProfileFormSelector = '#edit-profile-popup',
+             popupWithAddCardFormSelector = '#add-card-popup',
+             popupWithFullscreenImageSelector = '#open-image-popup',
+             popupWithRefreshAvatarFormSelector = '#refresh-avatar-popup',
+             popupWithDeleteConfirmButtonSelector = '#delete-card-popup',
+             buttonEditProfileOpenPopup = document.querySelector('.profile__edit-btn'),
+             buttonAddCardOpenPopup = document.querySelector('.profile__add-button'),
              cardTemplateSelector = '#place-card-template',
              placeCardSelector = '.places__list',
              formValidators = {},
@@ -36,14 +36,14 @@ export const editProfilePopupSelector = '#edit-profile-popup',
 
 export function generateCard (...args) {
     const card = new Card(...args),
-            cardElement = card.generateCard();
+          cardElement = card.generateCard();
 
     return cardElement;
 }
 
 export function generateMyCard (...args) {
     const card = new MyCard(...args),
-            cardElement = card.generateCard();
+          cardElement = card.generateCard();
 
     return cardElement;
 }

@@ -8,7 +8,7 @@
     object-fit: contain;
 }
 
-@media (max-width: 436px) {
+@media (max-width: 580px) {
     .popup__close {
         top: -36px;
         right: 0;
