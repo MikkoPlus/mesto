@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
             cardsData.reverse();
             cardsSection.renderItems(cardsData);
 
-            console.log('Загрузка данных с сервера прошла успешно')
+            console.log('Загрузка данных с сервера прошла успешно');
         })
         .catch(error => console.log(error));
         // Не представляю что можно в блоке finally сделать при получении данных с сервера
