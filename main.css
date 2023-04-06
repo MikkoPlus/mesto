@@ -32,12 +32,12 @@
 .popup_fullscreen-img{background-color:rgba(0,0,0,.9)}
 .popup__window{display:flex;flex-direction:column;left:50%;position:fixed;top:195px;transform:translateX(-50%)}
 .popup__window_type_form{background-color:#fff;border-radius:10px;box-shadow:0 0 25px rgba(0,0,0,.15);box-sizing:border-box;min-height:330px;padding:33px 36px 37px;white-space:nowrap;width:430px}@media (max-width:545px){.popup__window_type_form{padding:25px 22px;top:123px;width:350px}}@media (max-width:436px){.popup__window_type_form{min-height:322px;top:123px;width:282px}}
-.popup__window_type_fullscreen-img{height:75vh;max-width:75vw;padding:0;top:90px}
+.popup__window_type_fullscreen-img{max-height:75vh;max-width:90vw;padding:0;top:90px}@media (max-width:580px){.popup__window_type_fullscreen-img{min-height:15vh;width:90vw}}
 .popup__window_type_one-input{min-height:272px;top:224px}
 .popup__window_type_only-btn{min-height:100px}
-.popup__close{height:32px;margin:0;-o-object-fit:contain;object-fit:contain;position:absolute;right:-40px;top:-40px;width:32px}@media (max-width:436px){.popup__close{height:20px;right:0;top:-36px;width:20px}}
+.popup__close{height:32px;margin:0;-o-object-fit:contain;object-fit:contain;position:absolute;right:-40px;top:-40px;width:32px}@media (max-width:580px){.popup__close{height:20px;right:0;top:-36px;width:20px}}
 .popup__title{color:#000;font-size:24px;font-weight:900;line-height:29px;margin:0}@media (max-width:545px){.popup__title{font-size:21px}}@media (max-width:436px){.popup__title{font-size:18px;line-height:22px}}
-.popup__fullscreen-image{max-height:100%;-o-object-fit:contain;object-fit:contain;width:100%}
+.popup__fullscreen-image{max-height:75vh;max-width:100%;-o-object-fit:contain;object-fit:contain}
 .popup__descr{color:#fff;font-size:12px;font-weight:400;line-height:15px;margin:10px 0 0}
 .popup__button{background-color:#000;border:1px solid #000;border-radius:2px;color:#fff;cursor:pointer;display:block;font-size:18px;font-weight:400;height:50px;line-height:22px;margin-top:38px;opacity:1;padding:0;text-align:center;transition:opacity .3s ease 0s}.popup__button:hover{opacity:.8}
 .form{display:flex;flex-direction:column;flex-grow:1;justify-content:space-between;margin-top:10px}
