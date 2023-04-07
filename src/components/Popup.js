@@ -41,9 +41,7 @@ export default class Popup {
     _setEventListeners() {    
         document.addEventListener('keydown', this._closeByEsc);
     }
-
-    // Я правильно понял ваш коментарий на счет того, чтобы повесить один раз обработчики закрытия попапов при создании экземпляра класса?
-    // Метод _removeEventListeners используется, т.к. нужно же убирать обработчик события закрытия попапа при нажатии esc
+    
     setClickCloseEventListeners() {
         this._popupElement.addEventListener('mousedown', this._closeByOverlayClick);
         this._popupElement.addEventListener('click', this._closeByCloseIconClick);

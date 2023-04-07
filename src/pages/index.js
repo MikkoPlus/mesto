@@ -30,24 +30,26 @@ import {
 
 window.addEventListener('DOMContentLoaded', () => {
 
-    function handleLikeButton(cardId, isLiked, updateLikes) {
+    function handleLikeButton(card) {
 
-        if (!isLiked()) {
-            api.postLike(cardId())
+        if (!card.isLiked()) {
+            api.postLike(card.getCardId())
             .then(data => {
                 const {likes} = data;
-                updateLikes(likes);
+                card.updateLikes(likes);
+
+                console.log('Лайк поставлен');
              })
-            .catch(error => console.log(error))
-            .finally(() => console.log('Лайк поставлен'));
+            .catch(error => console.log(error));
         } else {
-            api.deleteLike(cardId())
+            api.deleteLike(card.getCardId())
             .then(data => {
                 const {likes} = data;
-                updateLikes(likes);
+                card.updateLikes(likes);
+
+                console.log('Лайк убран');
             })
-            .catch(error => console.log(error))
-            .finally(() => console.log('Лайк убран'));
+            .catch(error => console.log(error));
         }
     }
 
@@ -55,7 +57,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const userInfo = new UserInfo(profileDataSelectors);
 
-    //Создание класса Api 
+    // Создание класса Api 
 
     const api = new Api(apiConfig);
 
@@ -76,18 +78,18 @@ window.addEventListener('DOMContentLoaded', () => {
     // Открытие попапов с формами
 
     buttonEditProfileOpenPopup.addEventListener('click', () => {
-        editPopup.setInputValues(userInfo.getUserInfo());
+        popupWithEditForm.setInputValues(userInfo.getUserInfo());
         formValidators['edit-profile'].resetValidation();
-        editPopup.open();
+        popupWithEditForm.open();
     });
 
     buttonAddCardOpenPopup.addEventListener('click', () =>  {
-        addCardPopup.open();
+        popupWithAddCardForm.open();
         formValidators['add-card'].resetValidation();
     });
 
     avatarElement.addEventListener('click', () => {
-        refreshAvatarPopup.open();
+        popupWithRefreshAvatorForm.open();
         formValidators['refresh-avatar'].resetValidation();
     });
 
@@ -97,23 +99,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const cardsSection = new Section({renderer: (item) => {
         const {name, link, likes, _id} = item;
         const userId = userInfo.getUserId();
-
-        let isLiked = false;
-
-        if(likes.length > 0) {
-            likes.forEach(like => {
-                if(like._id === userId) {
-                    isLiked = true;
-                    return isLiked;
-                }
-            });
-        }
-
-        
+  
         if (userId === item.owner._id) {
             const cardElement = generateMyCard(
                 {name, link, likes, _id},
-                isLiked,
+                userId,
                 cardTemplateSelector,
                 popupWithImage.handleCardClick,
                 handleLikeButton,
@@ -124,7 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
             const cardElement = generateCard(
                 {name, link, likes, _id},
-                isLiked,
+                userId,
                 cardTemplateSelector,
                 popupWithImage.handleCardClick,
                 handleLikeButton
@@ -142,7 +132,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     popupWithImage.setClickCloseEventListeners();
 
-    //Загрузка информации о пользователе и карточек с сервера 
+    // Загрузка информации о пользователе и карточек с сервера 
 
     const getProfileData = api.getProfileData();
 
@@ -164,15 +154,13 @@ window.addEventListener('DOMContentLoaded', () => {
             console.log('Загрузка данных с сервера прошла успешно');
         })
         .catch(error => console.log(error));
-        // Не представляю что можно в блоке finally сделать при получении данных с сервера
-        // .finally(() => console.log());
-
 
     // Создание экземпляров классов попапа с формой
 
     // Редактирование и отправка данных профиля на сервер
-    const editPopup = new PopupWithForm(popupWithEditProfileFormSelector, (postBodyData) => {
-        editPopup.setCustomButtonText(loadingMessages.save);
+
+    const popupWithEditForm = new PopupWithForm(popupWithEditProfileFormSelector, (postBodyData) => {
+        popupWithEditForm.setCustomButtonText(loadingMessages.save);
         
         api.postProfileData(postBodyData)
         .then(data => {
@@ -183,78 +171,83 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.log(error))
         .finally(() => {
-            editPopup.setDefaultButtonText();
-            editPopup.close();
+            popupWithEditForm.setDefaultButtonText();
+            popupWithEditForm.close();
         });
     });
-    editPopup.setClickCloseEventListeners();
+    popupWithEditForm.setClickCloseEventListeners();
 
     // Создание новой карточки и отправка данных на сервер
-    const addCardPopup = new PopupWithForm(popupWithAddCardFormSelector, (postBodyData) => {
 
-        addCardPopup.setCustomButtonText(loadingMessages.save);
+    const popupWithAddCardForm = new PopupWithForm(popupWithAddCardFormSelector, (postBodyData) => {
+
+        popupWithAddCardForm.setCustomButtonText(loadingMessages.save);
         api.postNewCard(postBodyData)
             .then(data => {
-                const {name, link, likes, _id} = data;
-                const isLiked = false;
+                const {name, link, likes, _id} = data,
+                      userId = userInfo.getUserId();
+
                 const cardElement = generateMyCard(
                     {name, link, likes, _id},
-                    isLiked,
+                    userId,
                     cardTemplateSelector,
                     popupWithImage.handleCardClick,
                     handleLikeButton,
-                    popupWithDeletionСonfirm.handleTrashBagClick);
+                    popupWithDeletionСonfirm.handleTrashBagClick
+                    );
 
                 cardsSection.addItem(cardElement);
+                popupWithAddCardForm.close();
 
                 console.log('Загрузка данных на сервер прошла успешно');
             })
             .catch(error => console.log(error))
             .finally(() => {
-                addCardPopup.setDefaultButtonText();
-                addCardPopup.close();
+                popupWithAddCardForm.setDefaultButtonText();
             });
         });
     
-    addCardPopup.setClickCloseEventListeners();
+    popupWithAddCardForm.setClickCloseEventListeners();
 
     // Создание класса обновления аватара
-    const refreshAvatarPopup = new PopupWithForm(popupWithRefreshAvatarFormSelector, (postBodyData) => {
-        refreshAvatarPopup.setCustomButtonText(loadingMessages.refresh);
+
+    const popupWithRefreshAvatorForm = new PopupWithForm(popupWithRefreshAvatarFormSelector, (postBodyData) => {
+        popupWithRefreshAvatorForm.setCustomButtonText(loadingMessages.refresh);
 
         api.postAvatar(postBodyData)
             .then(data => {
                 userInfo.setAvatar(data.avatar);
+                popupWithRefreshAvatorForm.close();
+
                 console.log('Загрузка данных на сервер прошла успешно');
             })
             .catch(error => console.log(error))
             .finally(() => {
-                refreshAvatarPopup.setDefaultButtonText();
-                refreshAvatarPopup.close();
+                popupWithRefreshAvatorForm.setDefaultButtonText();
             });
     });
 
-    refreshAvatarPopup.setClickCloseEventListeners();
+    popupWithRefreshAvatorForm.setClickCloseEventListeners();
 
     // Создание экземпляра класса подтверждения удаления
-    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(popupWithDeleteConfirmButtonSelector);
 
-    const handleDeleteCard = () => {
+    const popupWithDeletionСonfirm = new PopupWithDeletionСonfirm(popupWithDeleteConfirmButtonSelector);
+    
+    popupWithDeletionСonfirm.setClickCloseEventListeners();
+
+    popupWithDeletionСonfirm.setCallback(() => {
         const {card, cardId} = popupWithDeletionСonfirm.getCardData();
 
         api.deleteCard(cardId)
-            .then(data => {
-                console.log(data);
+            .then(() => {
                 card.deleteCard();
+                popupWithDeletionСonfirm.close();
+                
                 console.log('Удаление карточки прошло успешно');
             })
             .catch(error => console.log(error))
             .finally(() => {
                 popupWithDeletionСonfirm.setDefaultButtonText();
-                popupWithDeletionСonfirm.close();
             });
-    };
-    popupWithDeletionСonfirm.setClickCloseEventListeners();
-
-    popupWithDeletionСonfirm.setCallback(handleDeleteCard);
+    });
 });

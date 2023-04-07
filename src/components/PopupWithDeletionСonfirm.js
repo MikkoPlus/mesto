@@ -14,7 +14,6 @@ export default class PopupWithDeletionСonfirm extends Popup {
         this._currentCard = currentCard;
     }
     
-    //  Публичная функция возвращает обьект с сылкой на экземпляр класса карточки и её id
     getCardData() {
         return {
             card: this._currentCard,
@@ -36,9 +35,11 @@ export default class PopupWithDeletionСonfirm extends Popup {
 
     _setEventListeners() {
         super._setEventListeners();
-        this._popupButton.addEventListener('click', (evt) => {
-            evt.preventDefault();
-            this._handleSubmit();
-        });
+        this._popupButton.addEventListener('click', this._handleSubmit);
+    }
+
+    _removeEventListeners() {
+        super._removeEventListeners();
+        this._popupButton.removeEventListener('click', this._handleSubmit);
     }
 }

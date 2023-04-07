@@ -1,8 +1,8 @@
 import Card from "./Card";
 
 export default class MyCard extends Card {
-    constructor({name, link, likes, _id}, isLiked, templateSelector, handleCardClick, handleLikeClick,  handleTrashBagClick) {
-        super({name, link, likes, _id}, isLiked, templateSelector, handleCardClick, handleLikeClick);
+    constructor({name, link, likes, _id}, userId, templateSelector, handleCardClick, handleLikeClick,  handleTrashBagClick) {
+        super({name, link, likes, _id}, userId, templateSelector, handleCardClick, handleLikeClick);
         this._handleTrashBagClick = handleTrashBagClick;
     }
 

@@ -17,7 +17,11 @@ export default class PopupWithForm extends Popup {
             this._inputValues[input.name] = input.value;
         });
         
-        return JSON.stringify(this._inputValues);
+        return this._inputValues;
+    }
+
+    _transformInputValuesToJSON() {
+        return JSON.stringify(this._getInputValues());
     }
 
     setDefaultButtonText() {
@@ -36,7 +40,7 @@ export default class PopupWithForm extends Popup {
 
     _handleSubmitForm(evt) {
         evt.preventDefault();
-        this._formSubmitFunction(this._getInputValues());
+        this._formSubmitFunction(this._transformInputValuesToJSON());
     }
 
     _setEventListeners() {

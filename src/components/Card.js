@@ -1,10 +1,10 @@
 export default class Card {
-    constructor({name, link, likes, _id}, isLiked, templateSelector, handleCardClick, handleLikeClick) {
+    constructor({name, link, likes, _id}, userId, templateSelector, handleCardClick, handleLikeClick) {
         this._imagePath = link;
         this._imageDescription = name;
         this._likes = likes;
         this._id = _id;
-        this._isCardLiked = isLiked;
+        this._userId = userId;
         this._trashBagSelector = '.place-card__trash-bag';
         this._heartElementSelector = '.place-card__heart';
         this._imageSelector = '.place-card__image';
@@ -13,9 +13,6 @@ export default class Card {
         this._handleCardClick = handleCardClick;
         this._handleLikeClick = handleLikeClick;
         this._templateSelector = templateSelector;
-        this.getCardId = this._getCardId.bind(this);
-        this.isLiked = this._isLiked.bind(this);
-        this.updateLikes = this._updateLikes.bind(this);
     }
 
     _getTemplate() {
@@ -30,47 +27,37 @@ export default class Card {
 
     _setEventListenersToCard() {
         this._heartElement.addEventListener('click', () => {
-            this._handleLikeClick(this.getCardId, this.isLiked, this. updateLikes);
+            this._handleLikeClick(this);
         });
         this._cardImage.addEventListener('click', () => {
             this._handleCardClick(this._imagePath, this._imageDescription);
         });
     }
 
-    _setInitialLikes() {
-        if (this._isLiked()) {
-            this._setLike();
-        }
-        this._updateLikeCounter(this._likes);
-        this._changeLikesCounterVisability();
-    }
-
-    _getCardId() {
+    getCardId() {
         return this._id;
     }
 
-    _isLiked() {
-        return this._isCardLiked;
+    isLiked() {
+        return this._cardLikes.some(like => like._id === this._userId);
+    }
+
+    updateLikes(likesArray) {
+        this._cardLikes = likesArray;
+
+        if(this.isLiked()) {
+            this._setLike();
+        } else {
+            this._removeLike();
+        }
+        this._updateLikeCounter(likesArray);
+        this._changeLikesCounterVisibility();
+        
     }
 
     _updateLikeCounter(likes) {
         this._likes = likes;
         this._likesCounter.textContent = likes.length;
-    }
-
-    _updateLikes(likesCount) {
-        if (!this._isLiked()) {
-            this._isCardLiked = true;
-            this._setLike();
-            this._updateLikeCounter(likesCount);
-        } else {
-            this._isCardLiked = false;
-            this._removeLike();
-            this._updateLikeCounter(likesCount);
-        }
-        console.log(likesCount);
-        this._updateLikeCounter(likesCount);
-        this._changeLikesCounterVisability();
     }
 
     _setLike() {
@@ -81,7 +68,7 @@ export default class Card {
         this._heartElement.classList.remove('place-card__heart_like');
     }
 
-    _changeLikesCounterVisability() {
+    _changeLikesCounterVisibility() {
         if(this._likes.length === 0) {
             this._likesCounter.classList.add('place-card__counter_hidden');
         } else {
@@ -110,9 +97,9 @@ export default class Card {
         this._element = this._getTemplate();
 
         this._searchCardComponents();
-        this._setInitialLikes();
         this._toggleTrashBagVisibility();
         this._setEventListenersToCard();
+        this.updateLikes(this._likes);
 
         this._cardImage.src = this._imagePath;
         this._cardImage.alt = this._imageDescription;
