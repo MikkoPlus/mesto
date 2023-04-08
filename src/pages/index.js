@@ -162,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const popupWithEditForm = new PopupWithForm(popupWithEditProfileFormSelector, (inputValues) => {
         popupWithEditForm.setCustomButtonText(loadingMessages.save);
 
-        const postBodyData = api.transformInputValuesToJSON(inputValues);
+        const postBodyData = api.transformDataToJSON(inputValues);
         
         api.postProfileData(postBodyData)
         .then(data => {
@@ -185,7 +185,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         popupWithAddCardForm.setCustomButtonText(loadingMessages.save);
 
-        const postBodyData = api.transformInputValuesToJSON(inputValues);
+        const postBodyData = api.transformDataToJSON(inputValues);
 
         api.postNewCard(postBodyData)
             .then(data => {
@@ -219,7 +219,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const popupWithRefreshAvatorForm = new PopupWithForm(popupWithRefreshAvatarFormSelector, (inputValues) => {
         popupWithRefreshAvatorForm.setCustomButtonText(loadingMessages.refresh);
 
-        const postBodyData = api.transformInputValuesToJSON(inputValues);
+        const postBodyData = api.transformDataToJSON(inputValues);
 
         api.postAvatar(postBodyData)
             .then(data => {

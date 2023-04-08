@@ -56,7 +56,7 @@ export default class Api {
         .then(response => this._checkResponse(response));
     }
 
-    transformInputValuesToJSON(inputValues) {
+    transformDataToJSON(inputValues) {
         return JSON.stringify(inputValues);
     }
     
