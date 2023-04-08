@@ -55,6 +55,10 @@ export default class Api {
         })
         .then(response => this._checkResponse(response));
     }
+
+    transformInputValuesToJSON(inputValues) {
+        return JSON.stringify(inputValues);
+    }
     
     getProfileData() {
         return this._fetchGetRequest(this._profileUrl);

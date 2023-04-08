@@ -159,29 +159,34 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Редактирование и отправка данных профиля на сервер
 
-    const popupWithEditForm = new PopupWithForm(popupWithEditProfileFormSelector, (postBodyData) => {
+    const popupWithEditForm = new PopupWithForm(popupWithEditProfileFormSelector, (inputValues) => {
         popupWithEditForm.setCustomButtonText(loadingMessages.save);
+
+        const postBodyData = api.transformInputValuesToJSON(inputValues);
         
         api.postProfileData(postBodyData)
         .then(data => {
             const {name, about} = data;
             userInfo.setUserInfo(name, about);
+            popupWithEditForm.close();
 
             console.log('Загрузка данных на сервер прошла успешно');
         })
         .catch(error => console.log(error))
         .finally(() => {
             popupWithEditForm.setDefaultButtonText();
-            popupWithEditForm.close();
         });
     });
     popupWithEditForm.setClickCloseEventListeners();
 
     // Создание новой карточки и отправка данных на сервер
 
-    const popupWithAddCardForm = new PopupWithForm(popupWithAddCardFormSelector, (postBodyData) => {
+    const popupWithAddCardForm = new PopupWithForm(popupWithAddCardFormSelector, (inputValues) => {
 
         popupWithAddCardForm.setCustomButtonText(loadingMessages.save);
+
+        const postBodyData = api.transformInputValuesToJSON(inputValues);
+
         api.postNewCard(postBodyData)
             .then(data => {
                 const {name, link, likes, _id} = data,
@@ -211,8 +216,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Создание класса обновления аватара
 
-    const popupWithRefreshAvatorForm = new PopupWithForm(popupWithRefreshAvatarFormSelector, (postBodyData) => {
+    const popupWithRefreshAvatorForm = new PopupWithForm(popupWithRefreshAvatarFormSelector, (inputValues) => {
         popupWithRefreshAvatorForm.setCustomButtonText(loadingMessages.refresh);
+
+        const postBodyData = api.transformInputValuesToJSON(inputValues);
 
         api.postAvatar(postBodyData)
             .then(data => {
